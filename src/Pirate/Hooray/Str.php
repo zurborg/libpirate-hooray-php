@@ -36,7 +36,7 @@ class Str
      * @param int $limit
      * @return string[]
      */
-    public static function split(string $path, int $limit = PHP_INT_MAX)
+    public static function split($path, $limit = PHP_INT_MAX)
     {
         if (!self::ok($path)) {
             return null;

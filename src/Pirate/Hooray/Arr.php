@@ -53,7 +53,7 @@ class Arr
      * @param int $index
      * @return int
      */
-    public static function index(array $array, int $index)
+    public static function index(array $array, $index)
     {
         $n = count($array);
         if (!$n) {
@@ -88,7 +88,7 @@ class Arr
      * @param mixed $default
      * @return mixed
      */
-    public static function get(array $array, string $key, $default = null)
+    public static function get(array $array, $key, $default = null)
     {
         return array_key_exists($key, $array) ? $array[$key] : $default;
     }
@@ -108,7 +108,7 @@ class Arr
      * @param mixed $default
      * @return mixed
      */
-    public static function getIndex(array $array, int $index, $default = null)
+    public static function getIndex(array $array, $index, $default = null)
     {
         return self::get($array, self::index($array, $index), $default);
     }
@@ -130,7 +130,7 @@ class Arr
      * @param mixed $value
      * @return mixed
      */
-    public static function init(array &$array, string $key, $value = null)
+    public static function init(array &$array, $key, $value = null)
     {
         if (array_key_exists($key, $array)) {
             return $array[$key];
@@ -157,7 +157,7 @@ class Arr
      * @param mixed $default
      * @return mixed
      */
-    public static function consume(array &$array, string $key, $default = null)
+    public static function consume(array &$array, $key, $default = null)
     {
         if (array_key_exists($key, $array)) {
             $value = $array[$key];
@@ -188,7 +188,7 @@ class Arr
      * @throws \Throwable
      * @return mixed
      */
-    public static function assert(array $array, string $key, $throw)
+    public static function assert(array $array, $key, $throw)
     {
         if (array_key_exists($key, $array)) {
             return;
@@ -217,7 +217,7 @@ class Arr
      * @param bool $strict
      * @return bool
      */
-    public static function in(array $haystack, $needle, bool $strict = true)
+    public static function in(array $haystack, $needle, $strict = true)
     {
         return in_array($needle, $haystack, $strict);
     }
@@ -242,7 +242,7 @@ class Arr
      * @param bool $strict
      * @return bool
      */
-    public static function is(array $array, string $key, $expect, bool $strict = true)
+    public static function is(array $array, $key, $expect, $strict = true)
     {
         $value = self::get($array, $key);
         return $strict ? $value === $expect : $value == $expect;
@@ -263,7 +263,7 @@ class Arr
      * @param bool $strict
      * @return bool
      */
-    public static function any(array $array, array $keys, bool $strict = true)
+    public static function any(array $array, array $keys, $strict = true)
     {
         if (!count($keys)) {
             return null;
@@ -291,7 +291,7 @@ class Arr
      * @param bool $strict
      * @return bool
      */
-    public static function all(array $array, array $keys, bool $strict = true)
+    public static function all(array $array, array $keys, $strict = true)
     {
         if (!count($keys)) {
             return null;
@@ -407,7 +407,7 @@ class Arr
      * @param bool $strict
      * @return bool
      */
-    public static function isDeep(array $array, array $keys, $expect, bool $strict = true)
+    public static function isDeep(array $array, array $keys, $expect, $strict = true)
     {
         $value = self::getDeep($array, $keys);
         return $strict ? $value === $expect : $value == $expect;
@@ -465,7 +465,7 @@ class Arr
      * @param mixed $default
      * @return mixed
      */
-    public static function getPath(array $array, string $path, $default = null)
+    public static function getPath(array $array, $path, $default = null)
     {
         return self::getDeep($array, Str::split($path), $default);
     }
@@ -488,7 +488,7 @@ class Arr
      * @param bool $strict
      * @return bool
      */
-    public static function isPath(array $array, string $path, $expect, bool $strict = true)
+    public static function isPath(array $array, $path, $expect, $strict = true)
     {
         $value = self::getPath($array, $path);
         return $strict ? $value === $expect : $value == $expect;
@@ -511,7 +511,7 @@ class Arr
      * @param mixed $value
      * @return void
      */
-    public static function setPath(array &$array, string $path, $value)
+    public static function setPath(array &$array, $path, $value)
     {
         self::setDeep($array, Str::split($path), $value);
         return;
