@@ -1,7 +1,6 @@
 ---
 type: library
 name: zurborg/pirate-hooray
-version: 0.0.1
 
 description: Arrrr! Here comes a pirate with santas little helpers!
 homepage: https://github.com/zurborg/libpirate-hooray-php
