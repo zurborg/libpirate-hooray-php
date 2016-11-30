@@ -1,0 +1,12 @@
+language: php
+
+before_script:
+  - composer self-update
+  - composer install --dev --prefer-dist
+
+script:
+  - ./phpcs --warning-severity=0 --standard=PSR2 src
+  - ./phpunit tests
+
+php:
+  - 7.0

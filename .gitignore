@@ -1,0 +1,9 @@
+vendor/
+*.orig
+.*
+*.out
+*.err
+*~
+composer.lock
+tests/phpunit_report/*
+composer.phar
