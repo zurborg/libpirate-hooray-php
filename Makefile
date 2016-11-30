@@ -1,6 +1,7 @@
 php=php
 perl=perl
 composer=$(php) composer.phar
+phpcs=$(php) vendor/squizlabs/php_codesniffer/scripts/phpcs
 phpunit=$(php) vendor/phpunit/phpunit/phpunit
 phpdoc=$(php) vendor/phpdocumentor/phpdocumentor/bin/phpdoc
 phpdocmd=$(php) vendor/evert/phpdoc-md/bin/phpdocmd
@@ -36,6 +37,7 @@ composer.json: composer.yaml
 	git add $@
 
 test:
+	$(phpcs) --warning-severity=0 --standard=PSR2 src
 	$(phpunit) --verbose tests >phpunit.out
 
 archive: | clean composer.json
