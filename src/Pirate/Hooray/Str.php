@@ -173,4 +173,102 @@ class Str
 
         return $times;
     }
+
+    /**
+     * @internal
+     */
+    const DURATION_L10N = [
+        'en' => [
+            'C' => '(one|$) centur(y|ies)',
+            'D' => '(one|$) decade(s)',
+            'Y' => '(one|$) year(s)',
+            'm' => '(one|$) month(s)',
+            'w' => '(one|$) week(s)',
+            'd' => '(one|$) day(s)',
+            'H' => '(one|$) hour(s)',
+            'M' => '(one|$) minute(s)',
+            'S' => '(one|$) second(s)',
+            'f' => '(one|$) millisecond(s)',
+            '&' => ' and ',
+            ',' => ', ',
+        ],
+        'de' => [
+            'C' => '(ein|$) Jahrhundert(e)',
+            'D' => '(eine|$) Dekade(n)',
+            'Y' => '(ein|$) Jahr(e)',
+            'm' => '(ein|$) Monat(e)',
+            'w' => '(eine|$) Woche(n)',
+            'd' => '(ein|$) Tag(e)',
+            'H' => '(eine|$) Stunde(n)',
+            'M' => '(eine|$) Minute(n)',
+            'S' => '(eine|$) Sekunde(n)',
+            'f' => '(eine|$) Millisekunde(n)',
+            '&' => ' und ',
+            ',' => ', ',
+        ],
+    ];
+
+    /**
+     * Pretty print seconds in human-readable format
+     *
+     * ```php
+     * Str::duration(3666, 2); # 'one hour and one minute'
+     * Str::duration(3666, 2); # 'one hour, one minute and 6 seconds'
+     * ```
+     *
+     * Currently available locals: `en` and `de`.
+     *
+     * @param float $seconds
+     * @param int $precision
+     * @param string $locale
+     * @return string
+     */
+    public static function duration(float $seconds, int $precision = 2, string $locale = null)
+    {
+        if (!$seconds) {
+            return '';
+        }
+
+        if (is_null($locale)) {
+            $locale = \Locale::getDefault();
+        }
+
+        $texts_l10n = self::DURATION_L10N;
+        $languages = array_keys($texts_l10n);
+        $locale  = \Locale::lookup($languages, $locale);
+        $locales = Arr::get($texts_l10n, $locale, []);
+
+        $strings = [];
+
+        $times = self::timechunks($seconds);
+
+        $precision--;
+        foreach ($times as $key => $amount) {
+            $string = Arr::get($locales, $key);
+            if ($string and $amount) {
+                $strings[] = self::pluralize($string, $amount);
+            }
+            if (count($strings) > 0) {
+                if ($precision > 0) {
+                    $precision--;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        if (!Arr::ok($strings)) {
+            return '';
+        }
+
+        $separator = Arr::get($locales, ',', ',');
+
+        $last = array_pop($strings);
+        if (Arr::ok($strings)) {
+            $and = Arr::get($locales, '&', $separator);
+            return implode($separator, $strings) . $and. $last;
+        } else {
+            return $last;
+        }
+    }
 }

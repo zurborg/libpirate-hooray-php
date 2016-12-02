@@ -128,3 +128,27 @@ The resulting array consists of following indicies:
 * $seconds **float**
 
 
+
+### duration
+
+    string Pirate\Hooray\Str::duration(float $seconds, integer $precision, string $locale)
+
+Pretty print seconds in human-readable format
+
+```php
+Str::duration(3666, 2); # 'one hour and one minute'
+Str::duration(3666, 2); # 'one hour, one minute and 6 seconds'
+```
+
+Currently available locals: `en` and `de`.
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $seconds **float**
+* $precision **integer**
+* $locale **string**
+
+
