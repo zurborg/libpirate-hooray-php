@@ -55,6 +55,25 @@ Split string into an array by its first character
 
 
 
+### replace
+
+    void Pirate\Hooray\Str::replace(string $str, string $regexp, mixed $replacement)
+
+In-place PCRE replacement
+
+
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $str **string** - &lt;p&gt;in/out string&lt;/p&gt;
+* $regexp **string** - &lt;p&gt;regular expression&lt;/p&gt;
+* $replacement **mixed** - &lt;p&gt;string or something callable&lt;/p&gt;
+
+
+
 ### pluralize
 
     string Pirate\Hooray\Str::pluralize(string $text, integer $amount, string $search)

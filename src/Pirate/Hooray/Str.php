@@ -46,6 +46,24 @@ class Str
     }
 
     /**
+     * In-place PCRE replacement
+     *
+     * @param string $str in/out string
+     * @param string $regexp regular expression
+     * @param mixed $replacement string or something callable
+     * @return void
+     */
+    public static function replace(string &$str, string $regexp, $replacement)
+    {
+        if (is_callable($replacement)) {
+            $str = preg_replace_callback($regexp, $replacement, $str);
+        } else {
+            $str = preg_replace($regexp, $replacement, $str);
+        }
+        return;
+    }
+
+    /**
      * Pluralize formatted string
      *
      * ```php
@@ -65,37 +83,37 @@ class Str
      */
     public static function pluralize(string $text, int $amount, string $search = '$')
     {
-        $text = preg_replace_callback(
+        self::replace(
+            $text,
             '/ \( ( [^|]+? ) \) /x',
             function ($match) use ($amount) {
                 return ($amount === 1 ? '' : $match[1]);
-            },
-            $text
+            }
         );
-        $text = preg_replace_callback(
+        self::replace(
+            $text,
             '/ \{ ( [^|]+? ) \} /x',
             function ($match) use ($amount) {
                 return ($amount === 1 ? $match[1] : '');
-            },
-            $text
+            }
         );
-        $text = preg_replace_callback(
+        self::replace(
+            $text,
             '/ \( ( [^|]*? ( \| [^|]*? )+ ) \) /x',
             function ($match) use ($amount) {
                 $parts = explode('|', $match[1]);
                 $last = array_pop($parts);
                 return ($amount === 0 ? $last : Arr::get($parts, $amount - 1, $last));
-            },
-            $text
+            }
         );
-        $text = preg_replace_callback(
+        self::replace(
+            $text,
             '/ \{ ( [^|]*? ( \| [^|]*? )+ ) \} /x',
             function ($match) use ($amount) {
                 $parts = explode('|', $match[1]);
                 $last = array_pop($parts);
                 return Arr::get($parts, $amount, $last);
-            },
-            $text
+            }
         );
         $text = str_replace($search, $amount, $text);
         return $text;
