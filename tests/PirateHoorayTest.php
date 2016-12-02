@@ -277,4 +277,39 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Str::split('/a/b/c/d/e', 5), ['a', 'b', 'c', 'd', 'e']);
         $this->assertSame(Str::split('/a/b/c/d/e', 6), ['a', 'b', 'c', 'd', 'e']);
     }
+
+    public function testPluralize() {
+        $this->assertSame(Str::pluralize('', 0), '');
+        $this->assertSame(Str::pluralize('$', 123), '123');
+        $this->assertSame(Str::pluralize('$$', 123), '123123');
+
+        $this->assertSame(Str::pluralize('$ item(s) need{s}', 0), '0 items need');
+        $this->assertSame(Str::pluralize('$ item(s) need{s}', 1), '1 item needs');
+        $this->assertSame(Str::pluralize('$ item(s) need{s}', 2), '2 items need');
+
+        $this->assertSame(Str::pluralize('(1st|2nd|3rd|$th)', 0), '0th');
+        $this->assertSame(Str::pluralize('(1st|2nd|3rd|$th)', 1), '1st');
+        $this->assertSame(Str::pluralize('(1st|2nd|3rd|$th)', 2), '2nd');
+        $this->assertSame(Str::pluralize('(1st|2nd|3rd|$th)', 3), '3rd');
+        $this->assertSame(Str::pluralize('(1st|2nd|3rd|$th)', 4), '4th');
+        $this->assertSame(Str::pluralize('(1st|2nd|3rd|$th)', 5), '5th');
+
+        $this->assertSame(Str::pluralize('{zero|one|two|three|more}', 0), 'zero');
+        $this->assertSame(Str::pluralize('{zero|one|two|three|more}', 1), 'one');
+        $this->assertSame(Str::pluralize('{zero|one|two|three|more}', 2), 'two');
+        $this->assertSame(Str::pluralize('{zero|one|two|three|more}', 3), 'three');
+        $this->assertSame(Str::pluralize('{zero|one|two|three|more}', 4), 'more');
+        $this->assertSame(Str::pluralize('{zero|one|two|three|more}', 5), 'more');
+
+        $this->assertSame(Str::pluralize('{No|One|$} quer(y|ies) (is|are)', 0), 'No queries are');
+        $this->assertSame(Str::pluralize('{No|One|$} quer(y|ies) (is|are)', 1), 'One query is');
+        $this->assertSame(Str::pluralize('{No|One|$} quer(y|ies) (is|are)', 2), '2 queries are');
+        $this->assertSame(Str::pluralize('{No|One|$} quer(y|ies) (is|are)', 3), '3 queries are');
+
+        $this->assertSame(Str::pluralize('-{zero|||}-{|one||}-{||two|}-{|||three}-', 0), '-zero----');
+        $this->assertSame(Str::pluralize('-{zero|||}-{|one||}-{||two|}-{|||three}-', 1), '--one---');
+        $this->assertSame(Str::pluralize('-{zero|||}-{|one||}-{||two|}-{|||three}-', 2), '---two--');
+        $this->assertSame(Str::pluralize('-{zero|||}-{|one||}-{||two|}-{|||three}-', 3), '----three-');
+        $this->assertSame(Str::pluralize('-{zero|||}-{|one||}-{||two|}-{|||three}-', 4), '----three-');
+    }
 }

@@ -7,6 +7,7 @@ homepage: https://github.com/zurborg/libpirate-hooray-php
 license: ISC
 keywords:
   - array
+  - pluralize
 
 authors:
   - name: David Zurborg
