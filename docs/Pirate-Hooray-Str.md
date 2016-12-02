@@ -100,3 +100,31 @@ Rule #5: `$` expands to the numeric value of amount. This replacement can be cha
 * $search **string**
 
 
+
+### timechunks
+
+    array<mixed,integer> Pirate\Hooray\Str::timechunks(float $seconds)
+
+Split seconds into precise chunks
+
+The resulting array consists of following indicies:
+`C` - centuries
+`D` - decades
+`Y` - years
+`m` - months
+`w` - weeks
+`d` - days
+`H` - hours
+`M` - minutes
+`S` - seconds
+`f` - milliseconds
+`!` - rest as devident of `PHP_INT_MAX` devisor
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $seconds **float**
+
+

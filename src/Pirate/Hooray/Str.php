@@ -118,4 +118,59 @@ class Str
         $text = str_replace($search, $amount, $text);
         return $text;
     }
+
+    /**
+     * @internal
+     */
+    const DURATION_VAL = [
+        'C' => 3155760000,
+        'D' => 315576000,
+        'Y' => 31557600,
+        'm' => 2629800,
+        'w' => 604800,
+        'd' => 86400,
+        'H' => 3600,
+        /// => ###,
+        'M' => 60,
+        'S' => 1,
+        'f' => 1/1000,
+    ];
+
+    /**
+     * Split seconds into precise chunks
+     *
+     * The resulting array consists of following indicies:
+     * `C` - centuries
+     * `D` - decades
+     * `Y` - years
+     * `m` - months
+     * `w` - weeks
+     * `d` - days
+     * `H` - hours
+     * `M` - minutes
+     * `S` - seconds
+     * `f` - milliseconds
+     * `!` - rest as devident of `PHP_INT_MAX` devisor
+     *
+     * @param float $seconds
+     * @return int[]
+     */
+    public static function timechunks(float $seconds)
+    {
+        if ($seconds < 0) {
+            $seconds = 0 - $seconds;
+        }
+
+        $times = [];
+
+        foreach (self::DURATION_VAL as $key => $value) {
+            $amount = (int) floor($seconds / $value);
+            $times[$key] = $amount;
+            $seconds -= $amount * $value;
+        }
+
+        $times['!'] = $seconds * PHP_INT_MAX;
+
+        return $times;
+    }
 }
