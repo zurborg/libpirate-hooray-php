@@ -271,4 +271,23 @@ class Str
             return $last;
         }
     }
+
+    /**
+     * Generates a pseudo random salt for blowfish password encryption
+     *
+     * ```php
+     * $salt = Str::salt2y(10); # 10 rounds
+     * $password = crypt('testtest', $salt);
+     * ```
+     *
+     * @param int $rounds
+     * @return string
+     */
+    public static function salt2y($rounds = 4)
+    {
+        $false = false;
+        $rand = substr(base64_encode(openssl_random_pseudo_bytes(20, $false)), 2, 22);
+        $rand = str_replace('+', '.', $rand);
+        return sprintf('$2y$%02d$%22s', $rounds, $rand);
+    }
 }

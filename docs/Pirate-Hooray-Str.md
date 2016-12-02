@@ -152,3 +152,23 @@ Currently available locals: `en` and `de`.
 * $locale **string**
 
 
+
+### salt2y
+
+    string Pirate\Hooray\Str::salt2y(integer $rounds)
+
+Generates a pseudo random salt for blowfish password encryption
+
+```php
+$salt = Str::salt2y(10); # 10 rounds
+$password = crypt('testtest', $salt);
+```
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $rounds **integer**
+
+
