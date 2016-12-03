@@ -26,9 +26,9 @@ Methods
 Checks whether $array is an array and returns the actual size
 
 ```php
-Arr::ok([]);             # returns 0
-Arr::ok(['foo','bar']);  # returns 2
-Arr::ok('foobar');       # returns false
+Arr::ok([]);             // returns 0
+Arr::ok(['foo','bar']);  // returns 2
+Arr::ok('foobar');       // returns false
 ```
 
 * Visibility: **public**
@@ -51,9 +51,9 @@ If index is below 0 or greater than the size of the array, the index value will 
 An index value of -1 results to the last element of the the array
 
 ```php
-Arr::index([1,2,3], -1);  # returns 2
-Arr::index([1,2,3], -11); # returns 1
-Arr::index([1,2,3], 9);   # returns 0
+Arr::index([1,2,3], -1);  // returns 2
+Arr::index([1,2,3], -11); // returns 1
+Arr::index([1,2,3], 9);   // returns 0
 ```
 
 * Visibility: **public**
@@ -79,9 +79,9 @@ $A = [
     'foo' => 123,
     'bar' => 456
 ];
-Arr::get($A, 'foo');          # returns 123
-Arr::get($A, 'bla');          # returns null, no error!
-Arr::get($A, 'bla', 'blubb'); # returns 'blubb'
+Arr::get($A, 'foo');          // returns 123
+Arr::get($A, 'bla');          // returns null, no error!
+Arr::get($A, 'bla', 'blubb'); // returns 'blubb'
 ```
 
 * Visibility: **public**
@@ -103,7 +103,7 @@ Get the value of an array by its index or return a default value
 
 ```php
 $A = [ 'foo', 'bar' ];
-Arr::getIndex($A, -1); # returns 'bar'
+Arr::getIndex($A, -1); // returns 'bar'
 ```
 
 If the array is an associative array, (or there is no numeric key in the range of 0 .. n-1) the default value will be returned,
@@ -130,8 +130,8 @@ Returns the actual value of the element
 $A = [
     'foo' => 123
 ];
-Arr::init($A, 'foo', 234); # does not override 'foo', just returns 123
-Arr::init($A, 'bar', 456); # sets 'bar', returns 456
+Arr::init($A, 'foo', 234); // does not override 'foo', just returns 123
+Arr::init($A, 'bar', 456); // sets 'bar', returns 456
 ```
 
 * Visibility: **public**
@@ -155,9 +155,9 @@ Delete an array element and return its value
 $A = [
     'foo' => 123
 ];
-Arr::consume($A, 'foo'); # unsets $A['foo'] and returns 123
-# hint: $A is empty now
-Arr::consume($A, 'bar', 456); # does nothing, returns 456
+Arr::consume($A, 'foo'); // unsets $A['foo'] and returns 123
+// hint: $A is empty now
+Arr::consume($A, 'bar', 456); // does nothing, returns 456
 ```
 
 * Visibility: **public**
@@ -181,11 +181,11 @@ Check whether an array key exists or throw an exception
 $A = [
     'foo' => 123
 ];
-Arr::assert($A, 'foo', 'meh'); # nothing happens
-Arr::assert($A, 'bar', 'this does not exists'); # throw new DomainException('this does not exists')
-$e = new Exception('...');  # just instanciating, not throwing
-Arr::assert($A, 'bar', $e); # throw $e
-Arr::assert($A, 'bar', function ($key) { return "bad: $key"; }); # retruns 'bad: bar'
+Arr::assert($A, 'foo', 'meh'); // nothing happens
+Arr::assert($A, 'bar', 'this does not exists'); // throw new DomainException('this does not exists')
+$e = new Exception('...');  // just instanciating, not throwing
+Arr::assert($A, 'bar', $e); // throw $e
+Arr::assert($A, 'bar', function ($key) { return "bad: $key"; }); // retruns 'bad: bar'
 ```
 
 * Visibility: **public**
@@ -207,10 +207,10 @@ Wrapper for in_array but with strict comparision by default
 
 ```php
 $A = [ '12', 34 ];
-Arr::in($A,  12 ); # false
-Arr::in($A, '12'); # true
-Arr::in($A,  34 ); # true
-Arr::in($A, '34'); # false
+Arr::in($A,  12 ); // false
+Arr::in($A, '12'); // true
+Arr::in($A,  34 ); // true
+Arr::in($A, '34'); // false
 ```
 
 * Visibility: **public**
@@ -235,10 +235,10 @@ $A = [
     'foo' =>  123,
     'bar' => '456'
 ];
-Arr::is($A, 'foo', 123);   # returns true
-Arr::is($A, 'bar', 456);   # returns false
-Arr::is($A, 'xxx', 'yyy'); # returns false
-Arr::is($A, 'yyy', null);  # returns true, since Arr::get returns null as default value if key does not exists
+Arr::is($A, 'foo', 123);   // returns true
+Arr::is($A, 'bar', 456);   // returns false
+Arr::is($A, 'xxx', 'yyy'); // returns false
+Arr::is($A, 'yyy', null);  // returns true, since Arr::get returns null as default value if key does not exists
 ```
 
 * Visibility: **public**
@@ -261,9 +261,9 @@ Checks whether any element exists in an array
 
 ```php
 $A = [ 'aaa', 'bbb' ];
-Arr::any($A, [ 'aaa', 'ccc' ]); # one match, returns true
-Arr::any($A, [ 'ccc', 'ddd' ]); # no match, returns false
-Arr::any($A, []); # no keys, returns null
+Arr::any($A, [ 'aaa', 'ccc' ]); // one match, returns true
+Arr::any($A, [ 'ccc', 'ddd' ]); // no match, returns false
+Arr::any($A, []); // no keys, returns null
 ```
 
 * Visibility: **public**
@@ -285,9 +285,9 @@ Checks whether all elements exists in an array
 
 ```php
 $A = [ 'aaa', 'bbb', 'ccc' ];
-Arr::all($A, [ 'ccc', 'ddd' ]); # one does not match, returns false
-Arr::all($A, [ 'ccc', 'aaa' ]); # all matches, returns true
-Arr::all($A, []); # no keys, returns null
+Arr::all($A, [ 'ccc', 'ddd' ]); // one does not match, returns false
+Arr::all($A, [ 'ccc', 'aaa' ]); // all matches, returns true
+Arr::all($A, []); // no keys, returns null
 ```
 
 * Visibility: **public**
@@ -310,9 +310,9 @@ Checks whether an array is an associative array
 ```php
 $A = [ 4, 9, 1 ];
 $B = [ 'foo' => 'bar' ];
-Arr::assoc($A); # returns false
-Arr::assoc($B); # returns true
-Arr::assoc([]); # returns null
+Arr::assoc($A); // returns false
+Arr::assoc($B); // returns true
+Arr::assoc([]); // returns null
 ```
 
 * Visibility: **public**
@@ -331,11 +331,11 @@ Arr::assoc([]); # returns null
 Force an array to be an non-associative array
 
 ```php
-Arr::flist('foo'); # returns [ 'foo' ]
-Arr::flist([ 'foo' ,  'bar' ]); # returns   [ 'foo' ,  'bar' ]
-Arr::flist([ 'foo' => 'bar' ]); # returns [ [ 'foo' => 'bar' ] ]
-Arr::flist(null); # returns []
-Arr::flist(null, false); # returns false
+Arr::flist('foo'); // returns [ 'foo' ]
+Arr::flist([ 'foo' ,  'bar' ]); // returns   [ 'foo' ,  'bar' ]
+Arr::flist([ 'foo' => 'bar' ]); // returns [ [ 'foo' => 'bar' ] ]
+Arr::flist(null); // returns []
+Arr::flist(null, false); // returns false
 ```
 
 * Visibility: **public**
@@ -360,8 +360,8 @@ $A = [
         'bar' => 123
     ]
 ];
-Arr::getDeep($A, [ 'foo', 'bar' ]);      # returns 123
-Arr::getDeep($A, [ 'bar', 'foo' ], 456); # returns 456
+Arr::getDeep($A, [ 'foo', 'bar' ]);      // returns 123
+Arr::getDeep($A, [ 'bar', 'foo' ], 456); // returns 456
 ```
 
 * Visibility: **public**
@@ -387,7 +387,7 @@ $A = [
         'bar' => 123
     ]
 ];
-Arr::isDeep($A, [ 'foo', 'bar' ], 123); # returns true
+Arr::isDeep($A, [ 'foo', 'bar' ], 123); // returns true
 ```
 
 * Visibility: **public**
@@ -414,8 +414,8 @@ $A = [
         'bar' => 123
     ]
 ];
-Arr::setDeep($A, [ 'foo', 'bar' ], 456); # $A['foo']['bar'] is now 456
-Arr::setDeep($A, [ 'foo' ], 789); # $A['foo'] is now 789
+Arr::setDeep($A, [ 'foo', 'bar' ], 456); // $A['foo']['bar'] is now 456
+Arr::setDeep($A, [ 'foo' ], 789); // $A['foo'] is now 789
 ```
 
 * Visibility: **public**
@@ -441,7 +441,7 @@ $A = [
         'bar' => 123
     ]
 ];
-Arr::getPath($A, '/foo/bar'); # retuns 123
+Arr::getPath($A, '/foo/bar'); // retuns 123
 ```
 
 See also `\Pirate\Hooray\Str::split()`
@@ -469,7 +469,7 @@ $A = [
         'bar' => 123
     ]
 ];
-Arr::isPath($A, '/foo/bar', 123); # returns true
+Arr::isPath($A, '/foo/bar', 123); // returns true
 ```
 
 * Visibility: **public**
@@ -496,7 +496,7 @@ $A = [
         'bar' => 123
     ]
 ];
-Arr::setPath($A, '/foo/bar', 456); # retuns $A['foo']['bar'] is now 456
+Arr::setPath($A, '/foo/bar', 456); // retuns $A['foo']['bar'] is now 456
 ```
 
 * Visibility: **public**
