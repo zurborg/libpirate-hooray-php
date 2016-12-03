@@ -65,6 +65,28 @@ class Str
     }
 
     /**
+     * Apply regular expression and return matching results
+     *
+     * ```php
+     * if (Str::match('Hello!', '/ll/')) {
+     *     ...;
+     * }
+     *
+     * if ($match = Str::match('Hello!', '/H(a|e)llo/')) {
+     *     ...;
+     * }
+     * ```
+     *
+     * @param string $subject
+     * @param string $regexp regular expression
+     * @return string[]
+     */
+    public static function match(string $subject, string $regexp)
+    {
+        return preg_match($regexp, $subject, $match) ? $match : null;
+    }
+
+    /**
      * In-place PCRE replacement
      *
      * @param string $str in/out string
