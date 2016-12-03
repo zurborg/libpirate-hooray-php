@@ -98,7 +98,7 @@ if ($match = Str::match('Hello!', '/H(a|e)llo/')) {
 
 ### replace
 
-    void Pirate\Hooray\Str::replace(string $str, string $regexp, mixed $replacement)
+    void Pirate\Hooray\Str::replace(string $subject, string $regexp, mixed $replacement, integer $limit)
 
 In-place PCRE replacement
 
@@ -109,9 +109,10 @@ In-place PCRE replacement
 
 
 #### Arguments
-* $str **string** - &lt;p&gt;in/out string&lt;/p&gt;
+* $subject **string** - &lt;p&gt;in/out string&lt;/p&gt;
 * $regexp **string** - &lt;p&gt;regular expression&lt;/p&gt;
 * $replacement **mixed** - &lt;p&gt;string or something callable&lt;/p&gt;
+* $limit **integer**
 
 
 

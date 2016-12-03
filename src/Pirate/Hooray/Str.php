@@ -89,17 +89,18 @@ class Str
     /**
      * In-place PCRE replacement
      *
-     * @param string $str in/out string
+     * @param string $subject in/out string
      * @param string $regexp regular expression
      * @param mixed $replacement string or something callable
+     * @param int $limit
      * @return void
      */
-    public static function replace(string &$str, string $regexp, $replacement)
+    public static function replace(string &$subject, string $regexp, $replacement, int $limit = -1)
     {
         if (is_callable($replacement)) {
-            $str = preg_replace_callback($regexp, $replacement, $str);
+            $subject = preg_replace_callback($regexp, $replacement, $subject, $limit);
         } else {
-            $str = preg_replace($regexp, $replacement, $str);
+            $subject = preg_replace($regexp, $replacement, $subject, $limit);
         }
         return;
     }
