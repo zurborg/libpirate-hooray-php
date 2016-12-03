@@ -302,7 +302,7 @@ class Str
      * @param int $rounds
      * @return string
      */
-    public static function salt2y($rounds = 4)
+    public static function salt2y(int $rounds = 4)
     {
         $bytes = 20;
         $false = false;
