@@ -248,10 +248,12 @@ class StrTest extends \PHPUnit_Framework_TestCase
 {
     public function testOk() {
         $this->assertSame(Str::ok(null), false);
-        $this->assertSame(Str::ok(''), 0);
-        $this->assertSame(Str::ok('foo'), 3);
+        $this->assertSame(Str::ok(false), false);
+        $this->assertSame(Str::ok(true), false);
         $this->assertSame(Str::ok([]), false);
         $this->assertSame(Str::ok(new \Exception('foo')), false);
+        $this->assertSame(Str::ok(''), 0);
+        $this->assertSame(Str::ok('foo'), 3);
     }
 
     public function testSplit() {
