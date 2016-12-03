@@ -304,8 +304,9 @@ class Str
      */
     public static function salt2y($rounds = 4)
     {
+        $bytes = 20;
         $false = false;
-        $rand = substr(base64_encode(openssl_random_pseudo_bytes(20, $false)), 2, 22);
+        $rand = substr(base64_encode(openssl_random_pseudo_bytes($bytes, $false)), 2, 22);
         $rand = str_replace('+', '.', $rand);
         return sprintf('$2y$%02d$%22s', $rounds, $rand);
     }
