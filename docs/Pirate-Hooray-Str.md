@@ -214,3 +214,20 @@ $password = crypt('testtest', $salt);
 * $rounds **integer**
 
 
+
+### uuidV4
+
+    string Pirate\Hooray\Str::uuidV4(boolean $binary)
+
+Generate pseudo-random V4 universal unique identifier
+
+
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $binary **boolean** - &lt;p&gt;return binary representation instead of string representation&lt;/p&gt;
+
+
