@@ -70,6 +70,32 @@ Str::split(''); // null
 
 
 
+### match
+
+    array<mixed,string> Pirate\Hooray\Str::match(string $subject, string $regexp)
+
+Apply regular expression and return matching results
+
+```php
+if (Str::match('Hello!', '/ll/')) {
+    ...;
+}
+
+if ($match = Str::match('Hello!', '/H(a|e)llo/')) {
+    ...;
+}
+```
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $subject **string**
+* $regexp **string** - &lt;p&gt;regular expression&lt;/p&gt;
+
+
+
 ### replace
 
     void Pirate\Hooray\Str::replace(string $subject, string $regexp, mixed $replacement, integer $limit)
