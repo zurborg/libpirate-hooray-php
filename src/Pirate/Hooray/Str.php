@@ -81,7 +81,7 @@ class Str
      * @param string $regexp regular expression
      * @return string[]
      */
-    public static function match(string $subject, string $regexp)
+    public static function match($subject, $regexp)
     {
         return preg_match($regexp, $subject, $match) ? $match : null;
     }
