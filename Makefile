@@ -1,7 +1,7 @@
 php=php
 perl=perl
 composer=$(php) composer.phar
-phpcs=$(php) vendor/squizlabs/php_codesniffer/bin/phpcs
+phpcs=$(php) vendor/squizlabs/php_codesniffer/scripts/phpcs
 phpunit=$(php) vendor/phpunit/phpunit/phpunit
 phpdoc=$(php) vendor/phpdocumentor/phpdocumentor/bin/phpdoc
 phpdocmd=$(php) vendor/evert/phpdoc-md/bin/phpdocmd

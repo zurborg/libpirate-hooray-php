@@ -1,11 +1,9 @@
 <?php
 
-namespace Pirate\Hooray;
-
 use Pirate\Hooray\Arr;
-class ArrTest extends \PHPUnit_Framework_TestCase
-{
 
+class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
+{
     public function testOk() {
         $this->assertSame(Arr::ok(null), false);
         $this->assertSame(Arr::ok(''), false);
@@ -240,78 +238,5 @@ class ArrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($A, [ 'foo' => [ 'bar' => 456 ] ]);
         Arr::setPath($A, '/foo', 789);
         $this->assertSame($A, [ 'foo' => 789 ]);
-    }
-}
-
-use Pirate\Hooray\Str;
-class StrTest extends \PHPUnit_Framework_TestCase
-{
-    public function testOk() {
-        $this->assertSame(Str::ok(null), false);
-        $this->assertSame(Str::ok(false), false);
-        $this->assertSame(Str::ok(true), false);
-        $this->assertSame(Str::ok([]), false);
-        $this->assertSame(Str::ok(new \Exception('foo')), false);
-        $this->assertSame(Str::ok(''), 0);
-        $this->assertSame(Str::ok('foo'), 3);
-    }
-
-    public function testSplit() {
-        $this->assertSame(Str::split(''), null);
-        $this->assertSame(Str::split('/'), ['']);
-        $this->assertSame(Str::split('/foo'), ['foo']);
-        $this->assertSame(Str::split('/foo/bar'), ['foo', 'bar']);
-        $this->assertSame(Str::split('/foo/bar/'), ['foo', 'bar', '']);
-        $this->assertSame(Str::split('//'), ['', '']);
-        $this->assertSame(Str::split('///'), ['', '', '']);
-        $this->assertSame(Str::split('//foo//bar//'), ['', 'foo', '', 'bar', '', '']);
-        $this->assertSame(Str::split('.foo.bar'), ['foo', 'bar']);
-        $this->assertSame(Str::split('#foo#bar'), ['foo', 'bar']);
-        $this->assertSame(Str::split(':foo:bar'), ['foo', 'bar']);
-        $this->assertSame(Str::split('\foo\bar'), ['foo', 'bar']);
-        $this->assertSame(Str::split(' '), ['']);
-        $this->assertSame(Str::split('  '), ['', '']);
-        $this->assertSame(Str::split('/a/b/c/d/e', 0), ['a/b/c/d/e']);
-        $this->assertSame(Str::split('/a/b/c/d/e', 1), ['a/b/c/d/e']);
-        $this->assertSame(Str::split('/a/b/c/d/e', 2), ['a', 'b/c/d/e']);
-        $this->assertSame(Str::split('/a/b/c/d/e', 3), ['a', 'b', 'c/d/e']);
-        $this->assertSame(Str::split('/a/b/c/d/e', 4), ['a', 'b', 'c', 'd/e']);
-        $this->assertSame(Str::split('/a/b/c/d/e', 5), ['a', 'b', 'c', 'd', 'e']);
-        $this->assertSame(Str::split('/a/b/c/d/e', 6), ['a', 'b', 'c', 'd', 'e']);
-    }
-
-    public function testPluralize() {
-        $this->assertSame(Str::pluralize('', 0), '');
-        $this->assertSame(Str::pluralize('$', 123), '123');
-        $this->assertSame(Str::pluralize('$$', 123), '123123');
-
-        $this->assertSame(Str::pluralize('$ item(s) need{s}', 0), '0 items need');
-        $this->assertSame(Str::pluralize('$ item(s) need{s}', 1), '1 item needs');
-        $this->assertSame(Str::pluralize('$ item(s) need{s}', 2), '2 items need');
-
-        $this->assertSame(Str::pluralize('(1st|2nd|3rd|$th)', 0), '0th');
-        $this->assertSame(Str::pluralize('(1st|2nd|3rd|$th)', 1), '1st');
-        $this->assertSame(Str::pluralize('(1st|2nd|3rd|$th)', 2), '2nd');
-        $this->assertSame(Str::pluralize('(1st|2nd|3rd|$th)', 3), '3rd');
-        $this->assertSame(Str::pluralize('(1st|2nd|3rd|$th)', 4), '4th');
-        $this->assertSame(Str::pluralize('(1st|2nd|3rd|$th)', 5), '5th');
-
-        $this->assertSame(Str::pluralize('{zero|one|two|three|more}', 0), 'zero');
-        $this->assertSame(Str::pluralize('{zero|one|two|three|more}', 1), 'one');
-        $this->assertSame(Str::pluralize('{zero|one|two|three|more}', 2), 'two');
-        $this->assertSame(Str::pluralize('{zero|one|two|three|more}', 3), 'three');
-        $this->assertSame(Str::pluralize('{zero|one|two|three|more}', 4), 'more');
-        $this->assertSame(Str::pluralize('{zero|one|two|three|more}', 5), 'more');
-
-        $this->assertSame(Str::pluralize('{No|One|$} quer(y|ies) (is|are)', 0), 'No queries are');
-        $this->assertSame(Str::pluralize('{No|One|$} quer(y|ies) (is|are)', 1), 'One query is');
-        $this->assertSame(Str::pluralize('{No|One|$} quer(y|ies) (is|are)', 2), '2 queries are');
-        $this->assertSame(Str::pluralize('{No|One|$} quer(y|ies) (is|are)', 3), '3 queries are');
-
-        $this->assertSame(Str::pluralize('-{zero|||}-{|one||}-{||two|}-{|||three}-', 0), '-zero----');
-        $this->assertSame(Str::pluralize('-{zero|||}-{|one||}-{||two|}-{|||three}-', 1), '--one---');
-        $this->assertSame(Str::pluralize('-{zero|||}-{|one||}-{||two|}-{|||three}-', 2), '---two--');
-        $this->assertSame(Str::pluralize('-{zero|||}-{|one||}-{||two|}-{|||three}-', 3), '----three-');
-        $this->assertSame(Str::pluralize('-{zero|||}-{|one||}-{||two|}-{|||three}-', 4), '----three-');
     }
 }

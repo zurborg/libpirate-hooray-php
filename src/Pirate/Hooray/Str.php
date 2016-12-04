@@ -67,17 +67,18 @@ class Str
     /**
      * In-place PCRE replacement
      *
-     * @param string $str in/out string
+     * @param string $subject in/out string
      * @param string $regexp regular expression
      * @param mixed $replacement string or something callable
+     * @param int $limit
      * @return void
      */
-    public static function replace(&$str, $regexp, $replacement)
+    public static function replace(&$subject, $regexp, $replacement, $limit = -1)
     {
         if (is_callable($replacement)) {
-            $str = preg_replace_callback($regexp, $replacement, $str);
+            $subject = preg_replace_callback($regexp, $replacement, $subject, $limit);
         } else {
-            $str = preg_replace($regexp, $replacement, $str);
+            $subject = preg_replace($regexp, $replacement, $subject, $limit);
         }
         return;
     }
@@ -309,5 +310,31 @@ class Str
         $rand = substr(base64_encode(openssl_random_pseudo_bytes($bytes, $false)), 2, 22);
         $rand = str_replace('+', '.', $rand);
         return sprintf('$2y$%02d$%22s', $rounds, $rand);
+    }
+
+    /**
+     * Generate pseudo-random V4 universal unique identifier
+     *
+     * @param bool $binary return binary representation instead of string representation
+     * @return string
+     */
+    public static function uuidV4($binary = false)
+    {
+        $len = 16;
+        $sec = false;
+        $bin = openssl_random_pseudo_bytes($len, $sec);
+        $bin &= hex2bin('ffffffff'.'ffff'.'0fff'.'bfff'.'ffffffffffff');
+        $bin |= hex2bin('00000000'.'0000'.'4000'.'8000'.'000000000000');
+        if ($binary) {
+            return $bin;
+        }
+        $hex = bin2hex($bin);
+        $uuid = [];
+        $i = 0;
+        foreach ([8,4,4,4,12] as $l) {
+            $uuid[] = substr($hex, $i, $l);
+            $i += $l;
+        }
+        return implode('-', $uuid);
     }
 }

@@ -72,7 +72,7 @@ Str::split(''); // null
 
 ### replace
 
-    void Pirate\Hooray\Str::replace(string $str, string $regexp, mixed $replacement)
+    void Pirate\Hooray\Str::replace(string $subject, string $regexp, mixed $replacement, integer $limit)
 
 In-place PCRE replacement
 
@@ -83,9 +83,10 @@ In-place PCRE replacement
 
 
 #### Arguments
-* $str **string** - &lt;p&gt;in/out string&lt;/p&gt;
+* $subject **string** - &lt;p&gt;in/out string&lt;/p&gt;
 * $regexp **string** - &lt;p&gt;regular expression&lt;/p&gt;
 * $replacement **mixed** - &lt;p&gt;string or something callable&lt;/p&gt;
+* $limit **integer**
 
 
 
@@ -185,5 +186,22 @@ $password = crypt('testtest', $salt);
 
 #### Arguments
 * $rounds **integer**
+
+
+
+### uuidV4
+
+    string Pirate\Hooray\Str::uuidV4(boolean $binary)
+
+Generate pseudo-random V4 universal unique identifier
+
+
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $binary **boolean** - &lt;p&gt;return binary representation instead of string representation&lt;/p&gt;
 
 
