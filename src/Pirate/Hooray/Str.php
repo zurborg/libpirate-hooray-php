@@ -79,11 +79,12 @@ class Str
      *
      * @param string $subject
      * @param string $regexp regular expression
+     * @param int $offset string offset
      * @return string[]
      */
-    public static function match(string $subject, string $regexp)
+    public static function match(string $subject, string $regexp, int $offset = 0)
     {
-        return preg_match($regexp, $subject, $match) ? $match : null;
+        return preg_match($regexp, $subject, $match, 0, $offset) ? $match : null;
     }
 
     /**
