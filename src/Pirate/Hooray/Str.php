@@ -107,6 +107,30 @@ class Str
     }
 
     /**
+     * Offset-based iteration of a string match by regular expression
+     *
+     * ```php
+     * Str::loop("-abc-def", "/-(\w+)/", function ($match) {
+     *     print_r($match);
+     * });
+     * ```
+     *
+     * @param string $subject
+     * @param string $regexp
+     * @param callable $function
+     * @return void
+     */
+    public static function loop(string $subject, string $regexp, callable $function)
+    {
+        $offset = 0;
+        while ($match = self::match($subject, $regexp, $offset)) {
+            $offset += strlen($match[0]);
+            $function($match);
+        }
+        return;
+    }
+
+    /**
      * Pluralize formatted string
      *
      * ```php
@@ -401,11 +425,9 @@ class Str
             $params = [];
             if (Arr::get($match, 'params')) {
                 $paramstr = Arr::consume($match, 'params');
-                $offset = 0;
-                while ($pair = Str::match(",$paramstr", '/,(?<key>[^=,\$]+)=(?<val>[^=,\$]+)/', $offset)) {
-                    $offset += strlen($pair[0]);
+                self::loop(",$paramstr", '/,(?<key>[^=,\$]+)=(?<val>[^=,\$]+)/', function ($pair) use (&$params) {
                     $params[$pair['key']] = $pair['val'];
-                }
+                });
             }
             $algo = 'unknown';
             if (substr($id, 0, 1) === '2') {
