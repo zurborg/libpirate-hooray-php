@@ -336,6 +336,120 @@ class Str
     }
 
     /**
+     * Parses a password in the _modular crypt format_ and returns some information about it
+     *
+     * ```php
+     * $info = parseMCF('$5$rounds=80000$wnsT7Yr92oJoP28r$r6gESRx/RBya4a.LFKCFY.r4BT/onHS7Qg9BiSR58.5');
+     * $info = [
+     *     'identifier' => 5,
+     *     'algorithm' => 'sha256',
+     *     'salt' => 'wnsT7Yr92oJoP28r',
+     *     'hash' => 'r6gESRx/RBya4a.LFKCFY.r4BT/onHS7Qg9BiSR58.5',
+     *     'format' => '$5$rounds=80000$',
+     *     'prefix' => '$5$rounds=80000$wnsT7Yr92oJoP28r$',
+     *     'params' => [
+     *         'rounds' => 80000
+     *     ]
+     * ];
+     * ```
+     *
+     * The following keyswords are recognized:
+     *
+     * + `identifier` - Bare identifier of the crypted string, this is the part between the first two dollar signs
+     * + `algorithm` - Short name of the algorithm, derived from the identifier
+     * + `salt` - Salt of the hash
+     * + `hash` - The bare hashed password itself
+     * + `format` - Identifier plus params or just everything without crypted parts (salt and hash)
+     * + `prefifx` - Identifier plus params plus salt, or just everything without the bare hash
+     * + `params` - A key-value based array with all parameters found in the string
+     *
+     * Currently, only format 2 (plus all sub-formats), 5 and 6 are supported. More to come.
+     */
+    public static function parseMCF(string $password)
+    {
+        if ($match = Str::match($password, '/^
+            \$
+            (?<identifier> [^\$]+ )
+
+            (?:
+                \$
+                (?<params>
+                    [^=,\$]+
+                    =
+                    [^=,\$]+
+                    (?:
+                        ,
+                        [^=,\$]+
+                        =
+                        [^=,\$]+
+                    )*
+                )
+            )?
+            (?:
+                \$
+                (?<salt> [^\$]+ )
+            )?
+            \$
+            (?<hash> [^\$]+ )
+        $/x')) {
+            $id     = Arr::consume($match, 'identifier');
+            $salt   = Arr::consume($match, 'salt');
+            $hash   = Arr::consume($match, 'hash');
+            $prefix = null;
+            $paramstr = null;
+            $format = null;
+            $params = [];
+            if (Arr::get($match, 'params')) {
+                $paramstr = Arr::consume($match, 'params');
+                $offset = 0;
+                while ($pair = Str::match(",$paramstr", '/,(?<key>[^=,\$]+)=(?<val>[^=,\$]+)/', $offset)) {
+                    $offset += strlen($pair[0]);
+                    $params[$pair['key']] = $pair['val'];
+                }
+            }
+            $algo = 'unknown';
+            if (substr($id, 0, 1) === '2') {
+                $algo = 'bcrypt';
+                $params['rounds'] = intval($salt);
+                $salt = substr($hash, 0, 22);
+                $hash = substr($hash, 22);
+                $format = sprintf('$%s$%02d$', $id, $params['rounds']);
+                $prefix = $format.$salt;
+            } elseif ($id === '5') {
+                $algo = 'sha256';
+                $format = '$5';
+                if (!is_null($paramstr)) {
+                    $format .= '$'.$paramstr.'$';
+                }
+                $prefix = $format.$salt.'$';
+            } elseif ($id === '6') {
+                $algo = 'sha512';
+                $format = '$6';
+                if (!is_null($paramstr)) {
+                    $format .= '$'.$paramstr.'$';
+                }
+                $prefix = $format.$salt.'$';
+            } elseif ($id === 'md5plain') {
+                $format = '$md5plain$';
+                $algo = 'md5';
+            } else {
+                $prefix = $password;
+            }
+            return [
+                'identifier'    => $id,
+                'algorithm'     => $algo,
+                'salt'          => $salt,
+                'hash'          => $hash,
+                'format'        => $format,
+                'params'        => $params,
+                'prefix'        => $prefix,
+            ];
+        } else {
+            return;
+        }
+    }
+
+    /**
      * Generate pseudo-random V4 universal unique identifier
      *
      * @param bool $binary return binary representation instead of string representation
