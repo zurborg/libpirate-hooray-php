@@ -2,9 +2,12 @@
 
 use Pirate\Hooray\Arr;
 
+namespace Pirate\Hooray;
+
 class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
 {
-    public function testOk() {
+    public function testOk()
+    {
         $this->assertSame(Arr::ok(null), false);
         $this->assertSame(Arr::ok(''), false);
         $this->assertSame(Arr::ok('foo'), false);
@@ -19,18 +22,19 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Arr::ok([null,null]), 2);
     }
 
-    public function testIndex() {
+    public function testIndex()
+    {
         $this->assertSame(Arr::index([], 0), null);
 
         $this->assertSame(Arr::index([1], -2), 0);
         $this->assertSame(Arr::index([1], -1), 0);
-        $this->assertSame(Arr::index([1],  0), 0);
+        $this->assertSame(Arr::index([1], 0), 0);
         $this->assertSame(Arr::index([1], +1), 0);
         $this->assertSame(Arr::index([1], +2), 0);
 
         $this->assertSame(Arr::index([1,2], -2), 0);
         $this->assertSame(Arr::index([1,2], -1), 1);
-        $this->assertSame(Arr::index([1,2],  0), 0);
+        $this->assertSame(Arr::index([1,2], 0), 0);
         $this->assertSame(Arr::index([1,2], +1), 1);
         $this->assertSame(Arr::index([1,2], +2), 0);
 
@@ -43,7 +47,7 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Arr::index([1,2,3], -3), 0);
         $this->assertSame(Arr::index([1,2,3], -2), 1);
         $this->assertSame(Arr::index([1,2,3], -1), 2);
-        $this->assertSame(Arr::index([1,2,3],  0), 0);
+        $this->assertSame(Arr::index([1,2,3], 0), 0);
         $this->assertSame(Arr::index([1,2,3], +1), 1);
         $this->assertSame(Arr::index([1,2,3], +2), 2);
         $this->assertSame(Arr::index([1,2,3], +3), 0);
@@ -55,7 +59,8 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Arr::index([1,2,3], +9), 0);
     }
 
-    public function testGet() {
+    public function testGet()
+    {
         $A = [
             'foo' => 123,
             'bar' => 456
@@ -65,12 +70,14 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Arr::get($A, 'bla', 'blubb'), 'blubb');
     }
 
-    public function testGetIndex() {
+    public function testGetIndex()
+    {
         $A = [ 'foo', 'bar' ];
         $this->assertSame(Arr::getIndex($A, -1), 'bar');
     }
 
-    public function testInit() {
+    public function testInit()
+    {
         $A = [
             'foo' => 123
         ];
@@ -79,7 +86,8 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($A, ['foo'=>123,'bar'=>456]);
     }
 
-    public function testConsume() {
+    public function testConsume()
+    {
         $A = [
             'foo' => 123
         ];
@@ -89,7 +97,8 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($A, []);
     }
 
-    public function testAssert1() {
+    public function testAssert1()
+    {
         $A = [
             'foo' => 123
         ];
@@ -100,7 +109,8 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
      * @expectedException        DomainException
      * @expectedExceptionMessage this does not exists
      */
-    public function testAssert2() {
+    public function testAssert2()
+    {
         $A = [
             'foo' => 123
         ];
@@ -111,7 +121,8 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
      * @expectedException        LogicException
      * @expectedExceptionMessage that does not exists
      */
-    public function testAssert3() {
+    public function testAssert3()
+    {
         $A = [
             'foo' => 123
         ];
@@ -119,22 +130,27 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         Arr::assert($A, 'bar', $e);
     }
 
-    public function testAssert4() {
+    public function testAssert4()
+    {
         $A = [
             'foo' => 123
         ];
-        $this->assertSame(Arr::assert($A, 'bar', function ($key) { return "-$key-"; }), '-bar-');
+        $this->assertSame(Arr::assert($A, 'bar', function ($key) {
+            return "-$key-";
+        }), '-bar-');
     }
 
-    public function testIn() {
+    public function testIn()
+    {
         $A = [ '123', 456 ];
-        $this->assertSame(Arr::in($A,  123 ), false);
+        $this->assertSame(Arr::in($A, 123), false);
         $this->assertSame(Arr::in($A, '123'), true);
-        $this->assertSame(Arr::in($A,  456 ), true);
+        $this->assertSame(Arr::in($A, 456), true);
         $this->assertSame(Arr::in($A, '456'), false);
     }
 
-    public function testIs() {
+    public function testIs()
+    {
         $A = [
             'foo' =>  123,
             'bar' => '456'
@@ -145,21 +161,24 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Arr::is($A, 'yyy', null), true);
     }
 
-    public function testAny() {
+    public function testAny()
+    {
         $A = [ 'aaa', 'bbb' ];
         $this->assertSame(Arr::any($A, [ 'aaa', 'ccc' ]), true);
         $this->assertSame(Arr::any($A, [ 'ccc', 'ddd' ]), false);
         $this->assertSame(Arr::any($A, []), null);
     }
 
-    public function testAll() {
+    public function testAll()
+    {
         $A = [ 'aaa', 'bbb', 'ccc' ];
         $this->assertSame(Arr::all($A, [ 'aaa', 'ccc' ]), true);
         $this->assertSame(Arr::all($A, [ 'ccc', 'ddd' ]), false);
         $this->assertSame(Arr::all($A, []), null);
     }
 
-    public function testAssoc() {
+    public function testAssoc()
+    {
         $A = [ 4, 9, 1 ];
         $B = [ 'foo' => 'bar' ];
         $this->assertSame(Arr::assoc($A), false);
@@ -167,25 +186,28 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Arr::assoc([]), null);
     }
 
-    public function testFlist() {
+    public function testFlist()
+    {
         $this->assertSame(Arr::flist('foo'), [ 'foo' ]);
-        $this->assertSame(Arr::flist([ 'foo' ,  'bar' ]),   [ 'foo' ,  'bar' ]  );
+        $this->assertSame(Arr::flist([ 'foo' ,  'bar' ]), [ 'foo' ,  'bar' ]);
         $this->assertSame(Arr::flist([ 'foo' => 'bar' ]), [ [ 'foo' => 'bar' ] ]);
         $this->assertSame(Arr::flist(null), []);
         $this->assertSame(Arr::flist(null, false), false);
     }
 
-    public function testGetDeep() {
+    public function testGetDeep()
+    {
         $A = [
             'foo' => [
                 'bar' => 123
             ]
         ];
-        $this->assertSame(Arr::getDeep($A, [ 'foo', 'bar' ]     ), 123);
+        $this->assertSame(Arr::getDeep($A, [ 'foo', 'bar' ]), 123);
         $this->assertSame(Arr::getDeep($A, [ 'bar', 'foo' ], 456), 456);
     }
 
-    public function testIsDeep() {
+    public function testIsDeep()
+    {
         $A = [
             'foo' => [
                 'bar' => 123
@@ -195,7 +217,8 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Arr::isDeep($A, [ 'bar', 'foo' ], 456), false);
     }
 
-    public function testSetDeep() {
+    public function testSetDeep()
+    {
         $A = [
             'foo' => [
                 'bar' => 123
@@ -207,17 +230,19 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($A, [ 'foo' => 789 ]);
     }
 
-    public function testGetPath() {
+    public function testGetPath()
+    {
         $A = [
             'foo' => [
                 'bar' => 123
             ]
         ];
-        $this->assertSame(Arr::getPath($A, '/foo/bar'     ), 123);
+        $this->assertSame(Arr::getPath($A, '/foo/bar'), 123);
         $this->assertSame(Arr::getPath($A, '/bar/foo', 456), 456);
     }
 
-    public function testIsPath() {
+    public function testIsPath()
+    {
         $A = [
             'foo' => [
                 'bar' => 123
@@ -228,7 +253,8 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Arr::isPath($A, '/bar/foo', 789), false);
     }
 
-    public function testSetPath() {
+    public function testSetPath()
+    {
         $A = [
             'foo' => [
                 'bar' => 123

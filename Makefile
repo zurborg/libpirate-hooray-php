@@ -37,7 +37,7 @@ composer.json: composer.yaml
 	git add $@
 
 test:
-	$(phpcs) --warning-severity=0 --standard=PSR2 src
+	$(phpcs) --warning-severity=0 --standard=PSR2 src tests
 	$(phpunit) --verbose tests
 
 archive: | clean composer.json

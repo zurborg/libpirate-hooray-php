@@ -2,9 +2,12 @@
 
 use Pirate\Hooray\Str;
 
+namespace Pirate\Hooray;
+
 class PirateHoorayStrTest extends \PHPUnit_Framework_TestCase
 {
-    public function testOk() {
+    public function testOk()
+    {
         $this->assertSame(Str::ok(null), false);
         $this->assertSame(Str::ok(false), false);
         $this->assertSame(Str::ok(true), false);
@@ -14,7 +17,8 @@ class PirateHoorayStrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Str::ok('foo'), 3);
     }
 
-    public function testSplit() {
+    public function testSplit()
+    {
         $this->assertSame(Str::split(''), null);
         $this->assertSame(Str::split('/'), ['']);
         $this->assertSame(Str::split('/foo'), ['foo']);
@@ -38,7 +42,8 @@ class PirateHoorayStrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Str::split('/a/b/c/d/e', 6), ['a', 'b', 'c', 'd', 'e']);
     }
 
-    public function testPluralize() {
+    public function testPluralize()
+    {
         $this->assertSame(Str::pluralize('', 0), '');
         $this->assertSame(Str::pluralize('$', 123), '123');
         $this->assertSame(Str::pluralize('$$', 123), '123123');
@@ -73,7 +78,8 @@ class PirateHoorayStrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Str::pluralize('-{zero|||}-{|one||}-{||two|}-{|||three}-', 4), '----three-');
     }
 
-    public function testUuid() {
+    public function testUuid()
+    {
         $uuids = [];
         for ($i = 0; $i < 10; $i++) {
             $uuid = Str::uuidV4();
