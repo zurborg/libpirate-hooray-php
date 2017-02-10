@@ -38,7 +38,7 @@ composer.json: composer.yaml
 
 test:
 	$(phpcs) --warning-severity=0 --standard=PSR2 src
-	$(phpunit) --verbose tests >phpunit.out
+	$(phpunit) --verbose tests
 
 archive: | clean composer.json
 	$(composer) archive
