@@ -367,7 +367,7 @@ class Str
      */
     public static function parseMCF(string $password)
     {
-        if ($match = Str::match($password, '/^
+        if ($match = self::match($password, '/^
             \$
             (?<identifier> [^\$]+ )
 
