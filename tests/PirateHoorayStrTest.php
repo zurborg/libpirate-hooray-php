@@ -42,6 +42,15 @@ class PirateHoorayStrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Str::split('/a/b/c/d/e', 6), ['a', 'b', 'c', 'd', 'e']);
     }
 
+    public function testLoop()
+    {
+        $matches = [];
+        Str::loop('-abc-def', '/-(\w+)/', function ($match) use (&$matches) {
+            $matches[] = $match;
+        });
+        $this->assertSame([['-abc', 'abc'], ['-def', 'def']], $matches);
+    }
+
     public function testPluralize()
     {
         $this->assertSame(Str::pluralize('', 0), '');
