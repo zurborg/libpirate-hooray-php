@@ -352,10 +352,10 @@ class Str
      */
     public static function salt2y(int $rounds = 4)
     {
-        $bytes = 20;
+        $bytes = 18;
         $false = false;
-        $rand = substr(base64_encode(openssl_random_pseudo_bytes($bytes, $false)), 2, 22);
-        $rand = str_replace('+', '.', $rand);
+        $rand = base64_encode(openssl_random_pseudo_bytes($bytes, $false));
+        $rand = str_replace('+', '.', substr($rand, 2, 22));
         return sprintf('$2y$%02d$%22s', $rounds, $rand);
     }
 
