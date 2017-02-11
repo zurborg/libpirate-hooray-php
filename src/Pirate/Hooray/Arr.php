@@ -94,6 +94,18 @@ class Arr
     }
 
     /**
+     * Wrapper for `array_key_exists()`
+     *
+     * @param array $array
+     * @param string $key
+     * @return boolean
+     */
+    public static function has(array $array, string $key)
+    {
+        return array_key_exists($key, $array) ? true : false;
+    }
+
+    /**
      * Get the value of an array by its index or return a default value
      *
      * ```php

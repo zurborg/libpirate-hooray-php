@@ -70,6 +70,15 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Arr::get($A, 'bla', 'blubb'), 'blubb');
     }
 
+    public function testHas()
+    {
+        $A = [
+            'foo' => 123
+        ];
+        $this->assertSame(true, Arr::has($A, 'foo'));
+        $this->assertSame(false, Arr::has($A, 'bla'));
+    }
+
     public function testGetIndex()
     {
         $A = [ 'foo', 'bar' ];
