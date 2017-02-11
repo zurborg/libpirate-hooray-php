@@ -452,8 +452,8 @@ class Str
                 }
                 $prefix = $format.$salt.'$';
             } elseif ($id === 'md5plain') {
-                $format = '$md5plain$';
                 $algo = 'md5';
+                $prefix = $format = '$md5plain$';
             } else {
                 $prefix = $password;
             }
