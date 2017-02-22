@@ -528,4 +528,26 @@ class Arr
         self::setDeep($array, Str::split($path), $value);
         return;
     }
+
+################################################################################
+
+    /**
+     * In-place recursive merge of another array
+     *
+     * ```php
+     * $A = [
+     *    'foo' => 123,
+     * ];
+     * Arr::merge($A, [ 'foo' => 456 ]);
+     * ```
+     *
+     * @param array &$array1
+     * @param array  $array2
+     * @return void
+     */
+    public static function merge(array &$array1, array $array2)
+    {
+        $array1 = array_merge($array1, $array2);
+        return;
+    }
 }

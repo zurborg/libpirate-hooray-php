@@ -274,4 +274,16 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         Arr::setPath($A, '/foo', 789);
         $this->assertSame($A, [ 'foo' => 789 ]);
     }
+
+    public function testMerge()
+    {
+        $A = [
+            'foo' => [
+                'bar' => 123
+            ],
+            'bar' => 456,
+        ];
+        Arr::merge($A, [ 'foo' => [ 'bar' => 789 ] ]);
+        $this->assertSame($A, [ 'foo' => [ 'bar' => 789 ], 'bar' => 456 ]);
+    }
 }
