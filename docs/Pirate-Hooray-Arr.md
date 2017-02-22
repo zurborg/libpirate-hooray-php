@@ -95,6 +95,24 @@ Arr::get($A, 'bla', 'blubb'); // returns 'blubb'
 
 
 
+### has
+
+    boolean Pirate\Hooray\Arr::has(array $array, string $key)
+
+Wrapper for `array_key_exists()`
+
+
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $array **array**
+* $key **string**
+
+
+
 ### getIndex
 
     mixed Pirate\Hooray\Arr::getIndex(array $array, integer $index, mixed $default)
@@ -507,5 +525,28 @@ Arr::setPath($A, '/foo/bar', 456); // retuns $A['foo']['bar'] is now 456
 * $array **array** - &lt;p&gt;&amp;$array&lt;/p&gt;
 * $path **string**
 * $value **mixed**
+
+
+
+### merge
+
+    void Pirate\Hooray\Arr::merge(array $array1, array $array2)
+
+In-place recursive merge of another array
+
+```php
+$A = [
+   'foo' => 123,
+];
+Arr::merge($A, [ 'foo' => 456 ]);
+```
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $array1 **array** - &lt;p&gt;&amp;$array1&lt;/p&gt;
+* $array2 **array**
 
 

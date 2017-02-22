@@ -72,7 +72,7 @@ Str::split(''); // null
 
 ### match
 
-    array<mixed,string> Pirate\Hooray\Str::match(string $subject, string $regexp)
+    array<mixed,string> Pirate\Hooray\Str::match(string $subject, string $regexp, integer $offset)
 
 Apply regular expression and return matching results
 
@@ -93,6 +93,7 @@ if ($match = Str::match('Hello!', '/H(a|e)llo/')) {
 #### Arguments
 * $subject **string**
 * $regexp **string** - &lt;p&gt;regular expression&lt;/p&gt;
+* $offset **integer** - &lt;p&gt;string offset&lt;/p&gt;
 
 
 
@@ -116,6 +117,29 @@ In-place PCRE replacement
 
 
 
+### loop
+
+    void Pirate\Hooray\Str::loop(string $subject, string $regexp, callable $function)
+
+Offset-based iteration of a string match by regular expression
+
+```php
+Str::loop("-abc-def", "/-(\w+)/", function ($match) {
+    print_r($match);
+});
+```
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $subject **string**
+* $regexp **string**
+* $function **callable**
+
+
+
 ### pluralize
 
     string Pirate\Hooray\Str::pluralize(string $text, integer $amount, string $search)
@@ -126,8 +150,8 @@ Pluralize formatted string
 Str::pluralize('{No|One|$} quer(y|ies) (is|are) found', 1); // 'One query is found'
 ```
 
-+ Rule #1: `(pl)` expands when the amount is exactly one. Otherwise this expression is omitted
-+ Rule #2: `{sl}` expands when the amount is not one. This is the opposite of rule #1.
++ Rule #1: `(pl)` expands when the amount is not one. Otherwise this expression is omitted
++ Rule #2: `{sl}` expands when the amount is exactly one. This is the opposite of rule #1.
 + Rule #3: `(one|two|three|four|all other)` expands to element in the list, whereas 0 expands to the last element.
 + Rule #4: `{zero|one|two|three|all other}` expands to element in the list, whereas 0 expands to the first element.
 + Rule #5: `$` expands to the numeric value of amount. This replacement can be changed with the 3rd parameter and defaults to the dollar sign.
@@ -212,6 +236,48 @@ $password = crypt('testtest', $salt);
 
 #### Arguments
 * $rounds **integer**
+
+
+
+### parseMCF
+
+    mixed Pirate\Hooray\Str::parseMCF(\Pirate\Hooray\string $password)
+
+Parses a password in the _modular crypt format_ and returns some information about it
+
+```php
+$info = parseMCF('$5$rounds=80000$wnsT7Yr92oJoP28r$r6gESRx/RBya4a.LFKCFY.r4BT/onHS7Qg9BiSR58.5');
+$info = [
+    'identifier' => 5,
+    'algorithm' => 'sha256',
+    'salt' => 'wnsT7Yr92oJoP28r',
+    'hash' => 'r6gESRx/RBya4a.LFKCFY.r4BT/onHS7Qg9BiSR58.5',
+    'format' => '$5$rounds=80000$',
+    'prefix' => '$5$rounds=80000$wnsT7Yr92oJoP28r$',
+    'params' => [
+        'rounds' => 80000
+    ]
+];
+```
+
+The following keyswords are recognized:
+
++ `identifier` - Bare identifier of the crypted string, this is the part between the first two dollar signs
++ `algorithm` - Short name of the algorithm, derived from the identifier
++ `salt` - Salt of the hash
++ `hash` - The bare hashed password itself
++ `format` - Identifier plus params or just everything without crypted parts (salt and hash)
++ `prefifx` - Identifier plus params plus salt, or just everything without the bare hash
++ `params` - A key-value based array with all parameters found in the string
+
+Currently, only format 2 (plus all sub-formats), 5 and 6 are supported. More to come.
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $password **Pirate\Hooray\string**
 
 
 
