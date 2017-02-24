@@ -41,7 +41,7 @@ test: lint
 	$(phpunit) --verbose tests
 
 lint:
-	for file in `find src tests -name '*.php' | sort`; do $(php) -l $$file; done
+	for file in `find src tests -name '*.php' | sort`; do $(php) -l $$file || exit 1; done
 
 archive: | clean composer.json
 	$(composer) archive
