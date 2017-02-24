@@ -15,6 +15,10 @@ class PirateHoorayStrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Str::ok(new \Exception('foo')), false);
         $this->assertSame(Str::ok(''), 0);
         $this->assertSame(Str::ok('foo'), 3);
+        $this->assertSame(Str::ok("123"), 3);
+        $this->assertSame(Str::ok(12345), 5);
+        $this->assertSame(Str::ok(1e3), 4);
+        $this->assertSame(Str::ok(0e0), 1);
     }
 
     public function testSplit()

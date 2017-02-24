@@ -18,7 +18,7 @@ class Str
 {
 
     /**
-     * Checks whether string is a string and returns its length
+     * Checks whether string is a scalar and not a bool and returns its length
      *
      * ```php
      * Str::ok(''); // 0
@@ -26,6 +26,7 @@ class Str
      * Str::ok(null); // false
      * Str::ok(false); // false
      * Str::ok(true); // false
+     * Str::ok(123); // 3
      * Str::ok([]); // false
      * ```
      *
@@ -35,7 +36,7 @@ class Str
      */
     public static function ok($string, $nvl = false)
     {
-        return is_string($string) ? strlen($string) : $nvl;
+        return (is_scalar($string) and !is_bool($string)) ? strlen($string) : $nvl;
     }
 
     /**
