@@ -131,6 +131,20 @@ class Str
     }
 
     /**
+     * In-place PCRE replacement with empty string
+     *
+     * @param string $subject in/out string
+     * @param string $regexp regular expression
+     * @param int $limit
+     * @return void
+     */
+    public static function remove(string &$subject, string $regexp, int $limit = -1)
+    {
+        self::replace($subject, $regexp, '', $limit);
+        return;
+    }
+
+    /**
      * Offset-based iteration of a string match by regular expression
      *
      * ```php
