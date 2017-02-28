@@ -89,6 +89,29 @@ class Str
     }
 
     /**
+     * Apply full-match regular expression and return results
+     *
+     * ```php
+     * if (Str::fullmatch('Hello!', '[A-Z][elo]{4}!')) {
+     *     // regex is actually something like /^[A-Z][elo]{4}!$/
+     *     ...;
+     * }
+     * ```
+     *
+     * @param string $subject
+     * @param string $regexp regular expression
+     * @param string $modifiers optional modifiers
+     * @return string[]
+     */
+    public static function fullmatch(string $subject, string $regexp, string $modifiers = '')
+    {
+        $delim = chr(1);
+        $prefix = '^';
+        $suffix = '$';
+        return preg_match($delim.$prefix.$regexp.$suffix.$delim.$modifiers, $subject, $match, 0, 0) ? $match : null;
+    }
+
+    /**
      * In-place PCRE replacement
      *
      * @param string $subject in/out string

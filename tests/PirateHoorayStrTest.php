@@ -21,6 +21,12 @@ class PirateHoorayStrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Str::ok(0e0), 1);
     }
 
+    public function testMatch()
+    {
+        $this->assertSame(Str::fullmatch('abc', '[abc]{3}'), [ '0' => 'abc' ]);
+        $this->assertSame(Str::fullmatch('abcdef', '[cde]{3}'), null);
+    }
+
     public function testSplit()
     {
         $this->assertSame(Str::split(''), null);
