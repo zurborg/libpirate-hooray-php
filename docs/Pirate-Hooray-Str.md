@@ -23,7 +23,7 @@ Methods
 
     integer Pirate\Hooray\Str::ok(mixed $string, mixed $nvl)
 
-Checks whether string is a string and returns its length
+Checks whether string is a scalar and not a bool and returns its length
 
 ```php
 Str::ok(''); // 0
@@ -31,6 +31,7 @@ Str::ok('Hello, World!'); // 13
 Str::ok(null); // false
 Str::ok(false); // false
 Str::ok(true); // false
+Str::ok(123); // 3
 Str::ok([]); // false
 ```
 
@@ -97,6 +98,30 @@ if ($match = Str::match('Hello!', '/H(a|e)llo/')) {
 
 
 
+### fullmatch
+
+    array<mixed,string> Pirate\Hooray\Str::fullmatch(string $subject, string $regexp, string $modifiers)
+
+Apply full-match regular expression and return results
+
+```php
+if (Str::fullmatch('Hello!', '[A-Z][elo]{4}!')) {
+    // regex is actually something like /^[A-Z][elo]{4}!$/
+    ...;
+}
+```
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $subject **string**
+* $regexp **string** - &lt;p&gt;regular expression&lt;/p&gt;
+* $modifiers **string** - &lt;p&gt;optional modifiers&lt;/p&gt;
+
+
+
 ### replace
 
     void Pirate\Hooray\Str::replace(string $subject, string $regexp, mixed $replacement, integer $limit)
@@ -113,6 +138,25 @@ In-place PCRE replacement
 * $subject **string** - &lt;p&gt;in/out string&lt;/p&gt;
 * $regexp **string** - &lt;p&gt;regular expression&lt;/p&gt;
 * $replacement **mixed** - &lt;p&gt;string or something callable&lt;/p&gt;
+* $limit **integer**
+
+
+
+### remove
+
+    void Pirate\Hooray\Str::remove(string $subject, string $regexp, integer $limit)
+
+In-place PCRE replacement with empty string
+
+
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $subject **string** - &lt;p&gt;in/out string&lt;/p&gt;
+* $regexp **string** - &lt;p&gt;regular expression&lt;/p&gt;
 * $limit **integer**
 
 
