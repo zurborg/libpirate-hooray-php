@@ -550,4 +550,35 @@ class Arr
         $array1 = array_merge($array1, $array2);
         return;
     }
+
+    /**
+     * Set default values in an array
+     *
+     * ```php
+     * $A = [
+     *    'foo' => 123,
+     * ];
+     * Arr::defaults($A, [ 'bar' => 123, 'foo' => 456 ]);
+     * // $A now contains [ 'bar' => 123, 'foo' => 123 ]
+     * ```
+     *
+     * @param array &$array
+     * @param array $defaults
+     * @return void
+     */
+    public static function defaults(array &$array, array $defaults)
+    {
+        $array = array_merge($defaults, $array);
+        return;
+    }
+
+    public static function shift(array &$array, $default = null)
+    {
+        return Arr::ok($array) ? array_shift($array) : $default;
+    }
+
+    public static function pop(array &$array, $default = null)
+    {
+        return Arr::ok($array) ? array_pop($array) : $default;
+    }
 }
