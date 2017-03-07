@@ -550,3 +550,63 @@ Arr::merge($A, [ 'foo' => 456 ]);
 * $array2 **array**
 
 
+
+### defaults
+
+    void Pirate\Hooray\Arr::defaults(array $array, array $defaults)
+
+Set default values in an array
+
+```php
+$A = [
+   'foo' => 123,
+];
+Arr::defaults($A, [ 'bar' => 123, 'foo' => 456 ]);
+// $A now contains [ 'bar' => 123, 'foo' => 123 ]
+```
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $array **array** - &lt;p&gt;&amp;$array&lt;/p&gt;
+* $defaults **array**
+
+
+
+### shift
+
+    mixed Pirate\Hooray\Arr::shift(array $array, $default)
+
+
+
+
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $array **array**
+* $default **mixed**
+
+
+
+### pop
+
+    mixed Pirate\Hooray\Arr::pop(array $array, $default)
+
+
+
+
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $array **array**
+* $default **mixed**
+
+
