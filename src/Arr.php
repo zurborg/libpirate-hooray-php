@@ -206,7 +206,7 @@ class Arr
             return;
         } elseif ($throw instanceof \Throwable) {
             throw $throw;
-        } elseif (is_callable($throw)) {
+        } elseif (!is_scalar($throw) && is_callable($throw)) {
             return $throw($key);
         } else {
             throw new \DomainException($throw);

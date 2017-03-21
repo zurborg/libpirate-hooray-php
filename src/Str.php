@@ -9,6 +9,8 @@
 
 namespace Pirate\Hooray;
 
+use \Pirate\Hooray\Arr;
+
 /**
  * Str is a class containing a bunch of public static functions
  *
@@ -122,7 +124,7 @@ class Str
      */
     public static function replace(string &$subject, string $regexp, $replacement, int $limit = -1)
     {
-        if (is_callable($replacement)) {
+        if (!is_scalar($replacement) && is_callable($replacement)) {
             $subject = preg_replace_callback($regexp, $replacement, $subject, $limit);
         } else {
             $subject = preg_replace($regexp, $replacement, $subject, $limit);
