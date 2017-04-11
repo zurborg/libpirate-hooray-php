@@ -364,3 +364,37 @@ Generate pseudo-random V4 universal unique identifier
 * $binary **boolean** - &lt;p&gt;return binary representation instead of string representation&lt;/p&gt;
 
 
+
+### upper
+
+    boolean Pirate\Hooray\Str::upper(string $subject)
+
+In-place str-to-upper
+
+
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $subject **string** - &lt;p&gt;&amp;$subject&lt;/p&gt;
+
+
+
+### lower
+
+    boolean Pirate\Hooray\Str::lower(string $subject)
+
+In-place str-to-lowers
+
+
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $subject **string** - &lt;p&gt;&amp;$subject&lt;/p&gt;
+
+
