@@ -98,6 +98,29 @@ if ($match = Str::match('Hello!', '/H(a|e)llo/')) {
 
 
 
+### matchall
+
+    array<mixed,string> Pirate\Hooray\Str::matchall(string $subject, string $regexp, integer $offset)
+
+Apply regular expression and return all matching results
+
+```php
+if (Str::match('Hello, World!', '/\w+/')) {
+    ...;
+}
+```
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $subject **string**
+* $regexp **string** - &lt;p&gt;regular expression&lt;/p&gt;
+* $offset **integer** - &lt;p&gt;string offset&lt;/p&gt;
+
+
+
 ### fullmatch
 
     array<mixed,string> Pirate\Hooray\Str::fullmatch(string $subject, string $regexp, string $modifiers)
