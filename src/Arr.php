@@ -572,11 +572,25 @@ class Arr
         return;
     }
 
+    /**
+     * Remove first item of array and return it
+     *
+     * @param array &$array
+     * @param mixed $default Default value if array is empty
+     * @return mixed
+     */
     public static function shift(array &$array, $default = null)
     {
         return Arr::ok($array) ? array_shift($array) : $default;
     }
 
+    /**
+     * Remove last item of array and return it
+     *
+     * @param array &$array
+     * @param mixed $default Default value if array is empty
+     * @return mixed
+     */
     public static function pop(array &$array, $default = null)
     {
         return Arr::ok($array) ? array_pop($array) : $default;

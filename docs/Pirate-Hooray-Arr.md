@@ -577,9 +577,9 @@ Arr::defaults($A, [ 'bar' => 123, 'foo' => 456 ]);
 
 ### shift
 
-    mixed Pirate\Hooray\Arr::shift(array $array, $default)
+    mixed Pirate\Hooray\Arr::shift(array $array, mixed $default)
 
-
+Remove first item of array and return it
 
 
 
@@ -588,16 +588,16 @@ Arr::defaults($A, [ 'bar' => 123, 'foo' => 456 ]);
 
 
 #### Arguments
-* $array **array**
-* $default **mixed**
+* $array **array** - &lt;p&gt;&amp;$array&lt;/p&gt;
+* $default **mixed** - &lt;p&gt;Default value if array is empty&lt;/p&gt;
 
 
 
 ### pop
 
-    mixed Pirate\Hooray\Arr::pop(array $array, $default)
+    mixed Pirate\Hooray\Arr::pop(array $array, mixed $default)
 
-
+Remove last item of array and return it
 
 
 
@@ -606,7 +606,7 @@ Arr::defaults($A, [ 'bar' => 123, 'foo' => 456 ]);
 
 
 #### Arguments
-* $array **array**
-* $default **mixed**
+* $array **array** - &lt;p&gt;&amp;$array&lt;/p&gt;
+* $default **mixed** - &lt;p&gt;Default value if array is empty&lt;/p&gt;
 
 
