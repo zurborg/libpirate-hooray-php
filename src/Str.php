@@ -91,6 +91,25 @@ class Str
     }
 
     /**
+     * Apply regular expression and return all matching results
+     *
+     * ```php
+     * if (Str::match('Hello, World!', '/\w+/')) {
+     *     ...;
+     * }
+     * ```
+     *
+     * @param string $subject
+     * @param string $regexp regular expression
+     * @param int $offset string offset
+     * @return string[]
+     */
+    public static function matchall(string $subject, string $regexp, int $offset = 0)
+    {
+        return preg_match_all($regexp, $subject, $match, 0, $offset) ? $match : null;
+    }
+
+    /**
      * Apply full-match regular expression and return results
      *
      * ```php
