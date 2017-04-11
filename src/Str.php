@@ -555,4 +555,32 @@ class Str
         }
         return implode('-', $uuid);
     }
+
+    /**
+     * In-place str-to-upper
+     *
+     * @param string &$subject
+     * @return bool true if subject is changed
+     */
+    public static function upper(string &$subject)
+    {
+        $newsubject = strtoupper($subject);
+        $changed = $newsubject !== $subject;
+        $subject = $newsubject;
+        return $changed;
+    }
+
+    /**
+     * In-place str-to-lowers
+     *
+     * @param string &$subject
+     * @return bool true if subject is changed
+     */
+    public static function lower(string &$subject)
+    {
+        $newsubject = strtolower($subject);
+        $changed = $newsubject !== $subject;
+        $subject = $newsubject;
+        return $changed;
+    }
 }
