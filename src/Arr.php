@@ -30,7 +30,7 @@ class Arr
      *
      * @param mixed $array
      * @param mixed $nvl
-     * @return int
+     * @return int|false
      */
     public static function ok($array, $nvl = false)
     {

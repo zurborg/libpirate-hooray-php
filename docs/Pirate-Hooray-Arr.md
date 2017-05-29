@@ -21,7 +21,7 @@ Methods
 
 ### ok
 
-    integer Pirate\Hooray\Arr::ok(mixed $array, mixed $nvl)
+    integer|false Pirate\Hooray\Arr::ok(mixed $array, mixed $nvl)
 
 Checks whether $array is an array and returns the actual size
 
