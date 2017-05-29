@@ -540,7 +540,7 @@ class Str
     {
         $len = 16;
         $sec = false;
-        $bin = openssl_random_pseudo_bytes($len, $sec);
+        $bin = \openssl_random_pseudo_bytes($len, $sec);
         $bin &= hex2bin('ffffffff'.'ffff'.'0fff'.'bfff'.'ffffffffffff');
         $bin |= hex2bin('00000000'.'0000'.'4000'.'8000'.'000000000000');
         if ($binary) {

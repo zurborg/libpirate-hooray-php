@@ -9,7 +9,7 @@
 
 namespace Pirate\Hooray;
 
-use \Pirate\Hooray\Str;
+use Pirate\Hooray\Str;
 
 /**
  * Arr is a class containing a bunch of public static functions
