@@ -321,4 +321,15 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame([], $A);
         $this->assertSame(123, $B);
     }
+
+    public function testReverse()
+    {
+        $A = [1,2,3,4];
+        Arr::reverse($A);
+        $this->assertSame([4,3,2,1], $A);
+
+        $B = ['foo'=>123,'bar'=>456];
+        Arr::reverse($B);
+        $this->assertSame(['bar'=>456,'foo'=>123], $B);
+    }
 }

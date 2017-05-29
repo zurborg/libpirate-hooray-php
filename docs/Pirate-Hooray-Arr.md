@@ -610,3 +610,20 @@ Remove last item of array and return it
 * $default **mixed** - &lt;p&gt;Default value if array is empty&lt;/p&gt;
 
 
+
+### reverse
+
+    void Pirate\Hooray\Arr::reverse(array $array)
+
+Reverse the key-order of an array
+
+
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $array **array** - &lt;p&gt;&amp;$array&lt;/p&gt;
+
+

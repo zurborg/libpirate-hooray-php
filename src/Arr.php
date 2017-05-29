@@ -595,4 +595,16 @@ class Arr
     {
         return count($array) ? array_pop($array) : $default;
     }
+
+    /**
+     * Reverse the key-order of an array
+     *
+     * @param array &$array
+     * @return void
+     */
+    public static function reverse(array &$array)
+    {
+        $array = array_reverse($array);
+        return;
+    }
 }
