@@ -581,7 +581,7 @@ class Arr
      */
     public static function shift(array &$array, $default = null)
     {
-        return Arr::ok($array) ? array_shift($array) : $default;
+        return count($array) ? array_shift($array) : $default;
     }
 
     /**
@@ -593,6 +593,6 @@ class Arr
      */
     public static function pop(array &$array, $default = null)
     {
-        return Arr::ok($array) ? array_pop($array) : $default;
+        return count($array) ? array_pop($array) : $default;
     }
 }

@@ -295,4 +295,30 @@ class PirateHoorayArrTest extends \PHPUnit_Framework_TestCase
         Arr::defaults($A, [ 'foo' => 456, 'bar' => 789 ]);
         $this->assertSame($A, [ 'foo' => 123, 'bar' => 789 ]);
     }
+
+    public function testShift()
+    {
+        $A = [1,2,3];
+        $B = Arr::shift($A);
+        $this->assertSame([2,3], $A);
+        $this->assertSame(1, $B);
+
+        $A = [];
+        $B = Arr::shift($A, 123);
+        $this->assertSame([], $A);
+        $this->assertSame(123, $B);
+    }
+
+    public function testPop()
+    {
+        $A = [1,2,3];
+        $B = Arr::pop($A);
+        $this->assertSame([1,2], $A);
+        $this->assertSame(3, $B);
+
+        $A = [];
+        $B = Arr::pop($A, 123);
+        $this->assertSame([], $A);
+        $this->assertSame(123, $B);
+    }
 }
