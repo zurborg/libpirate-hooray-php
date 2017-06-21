@@ -583,4 +583,25 @@ class Str
         $subject = $newsubject;
         return $changed;
     }
+
+    /**
+     * Reverse-apply of formatted string
+     *
+     * ```php
+     * $str = Str::enbrace('Hello {World}!', '<b>%s</%s>');
+     * ```
+     *
+     * @param string $subject
+     * @param string $format
+     * @return string
+     */
+    public static function enbrace(string $subject, string $format)
+    {
+        Str::replace($subject, '/(?<!\\\\)\{(.*?)(?<!\\\\)\}/', function ($match) use ($format) {
+            return sprintf($format, $match[1]);
+        });
+        Str::replace($subject, '/\\\{/', '{');
+        Str::replace($subject, '/\\\}/', '}');
+        return $subject;
+    }
 }

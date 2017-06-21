@@ -107,4 +107,11 @@ class PirateHoorayStrTest extends \PHPUnit_Framework_TestCase
             $uuids[$uuid] = $i;
         }
     }
+
+    public function testEnbrace()
+    {
+        $this->assertSame('Hello <World>!', Str::enbrace('Hello {World}!', '<%s>'));
+        $this->assertSame('Hello <{World>}!', Str::enbrace('Hello {\{World}\}!', '<%s>'));
+        $this->assertSame('<Hello> <World>!', Str::enbrace('{Hello} {World}!', '<%s>'));
+    }
 }
