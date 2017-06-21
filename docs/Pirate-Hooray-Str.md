@@ -386,7 +386,7 @@ In-place str-to-upper
 
     boolean Pirate\Hooray\Str::lower(string $subject)
 
-In-place str-to-lowers
+In-place str-to-lower
 
 
 
@@ -396,5 +396,25 @@ In-place str-to-lowers
 
 #### Arguments
 * $subject **string** - &lt;p&gt;&amp;$subject&lt;/p&gt;
+
+
+
+### enbrace
+
+    string Pirate\Hooray\Str::enbrace(string $subject, string $format)
+
+Reverse-apply of formatted string
+
+```php
+$str = Str::enbrace('Hello {World}!', '<b>%s</%s>');
+```
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $subject **string**
+* $format **string**
 
 

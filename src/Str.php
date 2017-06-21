@@ -571,7 +571,7 @@ class Str
     }
 
     /**
-     * In-place str-to-lowers
+     * In-place str-to-lower
      *
      * @param string &$subject
      * @return bool true if subject is changed
