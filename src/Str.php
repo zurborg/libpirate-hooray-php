@@ -102,7 +102,7 @@ class Str
      * Apply regular expression and return all matching results
      *
      * ```php
-     * if (Str::match('Hello, World!', '/\w+/')) {
+     * if (Str::matchall('Hello, World!', '/\w+/')) {
      *     ...;
      * }
      * ```
