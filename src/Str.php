@@ -38,7 +38,7 @@ class Str
      */
     public static function ok($string, $nvl = false)
     {
-        return (is_scalar($string) and !is_bool($string)) ? strlen($string) : $nvl;
+        return (is_scalar($string) and !is_bool($string)) ? \mb_strlen($string) : $nvl;
     }
 
     /**
@@ -557,28 +557,28 @@ class Str
     }
 
     /**
-     * In-place str-to-upper
+     * In-place str-to-upper, unicode-aware
      *
      * @param string &$subject
      * @return bool true if subject is changed
      */
     public static function upper(string &$subject)
     {
-        $newsubject = strtoupper($subject);
+        $newsubject = \mb_convert_case($subject, MB_CASE_UPPER);
         $changed = $newsubject !== $subject;
         $subject = $newsubject;
         return $changed;
     }
 
     /**
-     * In-place str-to-lower
+     * In-place str-to-lower, unicode-aware
      *
      * @param string &$subject
      * @return bool true if subject is changed
      */
     public static function lower(string &$subject)
     {
-        $newsubject = strtolower($subject);
+        $newsubject = \mb_convert_case($subject, MB_CASE_LOWER);
         $changed = $newsubject !== $subject;
         $subject = $newsubject;
         return $changed;

@@ -1,8 +1,8 @@
 <?php
 
-use Pirate\Hooray\Str;
-
 namespace Pirate\Hooray;
+
+use Pirate\Hooray\Str;
 
 class PirateHoorayStrTest extends \PHPUnit_Framework_TestCase
 {
@@ -113,5 +113,19 @@ class PirateHoorayStrTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Hello <World>!', Str::enbrace('Hello {World}!', '<%s>'));
         $this->assertSame('Hello <{World>}!', Str::enbrace('Hello {\{World}\}!', '<%s>'));
         $this->assertSame('<Hello> <World>!', Str::enbrace('{Hello} {World}!', '<%s>'));
+    }
+
+    public function testUpper()
+    {
+        $str = 'asdfghæðđŋħ';
+        Str::upper($str);
+        $this->assertSame('ASDFGHÆÐĐŊĦ', $str);
+    }
+
+    public function testLower()
+    {
+        $str = 'ASDFGHÆÐĐŊĦ';
+        Str::lower($str);
+        $this->assertSame('asdfghæðđŋħ', $str);
     }
 }

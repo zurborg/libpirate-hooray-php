@@ -33,6 +33,7 @@
    "minimum-stability" : "stable",
    "name" : "zurborg/pirate-hooray",
    "require" : {
+      "ext-mbstring" : "*",
       "php" : "~7"
    },
    "require-dev" : {
