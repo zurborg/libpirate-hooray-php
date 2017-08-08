@@ -67,6 +67,14 @@ class Str
         return explode($delim, substr($path, 1), $limit);
     }
 
+    public static function regexp(string $regexp, bool $delim = false, string $modifiers = '')
+    {
+        $delim = chr(1);
+        $prefix = $delim ? '^' : '';
+        $suffix = $delim ? '$' : '';
+        return $delim . $prefix . $regexp . $suffix . $delim . $modifiers;
+    }
+
     /**
      * Apply regular expression and return matching results
      *
@@ -126,10 +134,8 @@ class Str
      */
     public static function fullmatch(string $subject, string $regexp, string $modifiers = '')
     {
-        $delim = chr(1);
-        $prefix = '^';
-        $suffix = '$';
-        return preg_match($delim.$prefix.$regexp.$suffix.$delim.$modifiers, $subject, $match, 0, 0) ? $match : null;
+        $regexp = self::regexp($regexp, true, $modifiers);
+        return preg_match($regexp, $subject, $match, 0, 0) ? $match : null;
     }
 
     /**
