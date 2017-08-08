@@ -617,17 +617,28 @@ class Str
      * Reverse-apply of formatted string
      *
      * ```php
-     * $str = Str::enbrace('Hello {World}!', '<b>%s</%s>');
+     * $str = Str::surround('Hello {World}!', '<b>', '</b>');
      * ```
      *
      * @param string $subject
-     * @param string $format
+     * @param string $prefix
+     * @param string $suffix
      * @return string
      */
-    public static function enbrace(string $subject, string $format)
+    public static function surround(string $subject, string $prefix, string $suffix)
     {
-        Str::replace($subject, '/(?<!\\\\)\{(.*?)(?<!\\\\)\}/', function ($match) use ($format) {
-            return sprintf($format, $match[1]);
+        Str::replace($subject, '/(?<!\\\\)\{/', $prefix);
+        Str::replace($subject, '/\\\{/', '{');
+        Str::replace($subject, '/(?<!\\\\)\}/', $suffix);
+        Str::replace($subject, '/\\\}/', '}');
+        return $subject;
+    }
+
+    public static function enbrace(string $subject, array $formats)
+    {
+        Str::replace($subject, '/(?<!\\\\)\{(\w+)\|(.*?)(?<!\\\\)\}/', function ($match) use ($formats) {
+            $format = Arr::get($formats, $match[1]);
+            return sprintf($format, $match[2]);
         });
         Str::replace($subject, '/\\\{/', '{');
         Str::replace($subject, '/\\\}/', '}');

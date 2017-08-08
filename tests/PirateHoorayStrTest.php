@@ -109,11 +109,17 @@ class PirateHoorayStrTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testSurround()
+    {
+        $this->assertSame('Hello <World>!', Str::surround('Hello {World}!', '<', '>'));
+        $this->assertSame('Hello <{World>}!', Str::surround('Hello {\{World}\}!', '<', '>'));
+        $this->assertSame('<Hello> <World>!', Str::surround('{Hello} {World}!', '<', '>'));
+    }
+
     public function testEnbrace()
     {
-        $this->assertSame('Hello <World>!', Str::enbrace('Hello {World}!', '<%s>'));
-        $this->assertSame('Hello <{World>}!', Str::enbrace('Hello {\{World}\}!', '<%s>'));
-        $this->assertSame('<Hello> <World>!', Str::enbrace('{Hello} {World}!', '<%s>'));
+        $this->assertSame('<Hello> [World]!', Str::enbrace('{1|Hello} {0|World}!', ['[%s]','<%s>']));
+        $this->assertSame('<b>Hello</b> <i>World</i>!', Str::enbrace('{b|Hello} {i|World}!', ['b'=>'<b>%s</b>','i'=>'<i>%s</i>']));
     }
 
     public function testUpper()
