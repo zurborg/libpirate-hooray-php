@@ -591,6 +591,29 @@ class Str
     }
 
     /**
+     * Checks whether a string is foldable, i.e. at least one letter can be converted to upper or to lower case, unicode-aware
+     *
+     * @param string $subject
+     * @return bool
+     */
+    public static function foldable(string $subject)
+    {
+        return \mb_convert_case($subject, MB_CASE_LOWER) !== \mb_convert_case($subject, MB_CASE_UPPER);
+    }
+
+    /**
+     * Compare two strings regardless of its case, unicode-aware
+     *
+     * @param string $a
+     * @param string $b
+     * @return bool
+     */
+    public static function fceq(string $a, string $b)
+    {
+        return \mb_convert_case($a, MB_CASE_LOWER) === \mb_convert_case($b, MB_CASE_LOWER) or \mb_convert_case($a, MB_CASE_UPPER) === \mb_convert_case($b, MB_CASE_UPPER);
+    }
+
+    /**
      * Reverse-apply of formatted string
      *
      * ```php

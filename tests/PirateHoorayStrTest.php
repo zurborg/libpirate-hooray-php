@@ -129,4 +129,11 @@ class PirateHoorayStrTest extends \PHPUnit_Framework_TestCase
         Str::lower($str);
         $this->assertSame('asdfghæðđŋħ', $str);
     }
+
+    public function testFoldable()
+    {
+        $this->assertTrue(Str::foldable('asdfghæßðđŋ'));
+        $this->assertTrue(Str::foldable('ASDFGHÆÐĐŊĦ'));
+        $this->assertFalse(Str::foldable('`1234567890-=[];#,./`!"£$%^&*()_+{}:@~<>?|'));
+    }
 }
