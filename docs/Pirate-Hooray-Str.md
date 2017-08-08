@@ -71,6 +71,25 @@ Str::split(''); // null
 
 
 
+### regexp
+
+    mixed Pirate\Hooray\Str::regexp(\Pirate\Hooray\string $regexp, \Pirate\Hooray\bool $delim, \Pirate\Hooray\string $modifiers)
+
+
+
+
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $regexp **Pirate\Hooray\string**
+* $delim **Pirate\Hooray\bool**
+* $modifiers **Pirate\Hooray\string**
+
+
+
 ### match
 
     array<mixed,string> Pirate\Hooray\Str::match(string $subject, string $regexp, integer $offset)
@@ -105,7 +124,7 @@ if ($match = Str::match('Hello!', '/H(a|e)llo/')) {
 Apply regular expression and return all matching results
 
 ```php
-if (Str::match('Hello, World!', '/\w+/')) {
+if (Str::matchall('Hello, World!', '/\w+/')) {
     ...;
 }
 ```
@@ -369,7 +388,7 @@ Generate pseudo-random V4 universal unique identifier
 
     boolean Pirate\Hooray\Str::upper(string $subject)
 
-In-place str-to-upper
+In-place str-to-upper, unicode-aware
 
 
 
@@ -386,7 +405,7 @@ In-place str-to-upper
 
     boolean Pirate\Hooray\Str::lower(string $subject)
 
-In-place str-to-lower
+In-place str-to-lower, unicode-aware
 
 
 
@@ -399,14 +418,49 @@ In-place str-to-lower
 
 
 
-### enbrace
+### foldable
 
-    string Pirate\Hooray\Str::enbrace(string $subject, string $format)
+    boolean Pirate\Hooray\Str::foldable(string $subject)
+
+Checks whether a string is foldable, i.e. at least one letter can be converted to upper or to lower case, unicode-aware
+
+
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $subject **string**
+
+
+
+### fceq
+
+    boolean Pirate\Hooray\Str::fceq(string $a, string $b)
+
+Compare two strings regardless of its case, unicode-aware
+
+
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $a **string**
+* $b **string**
+
+
+
+### surround
+
+    string Pirate\Hooray\Str::surround(string $subject, string $prefix, string $suffix)
 
 Reverse-apply of formatted string
 
 ```php
-$str = Str::enbrace('Hello {World}!', '<b>%s</%s>');
+$str = Str::surround('Hello {World}!', '<b>', '</b>');
 ```
 
 * Visibility: **public**
@@ -415,6 +469,25 @@ $str = Str::enbrace('Hello {World}!', '<b>%s</%s>');
 
 #### Arguments
 * $subject **string**
-* $format **string**
+* $prefix **string**
+* $suffix **string**
+
+
+
+### enbrace
+
+    mixed Pirate\Hooray\Str::enbrace(\Pirate\Hooray\string $subject, array $formats)
+
+
+
+
+
+* Visibility: **public**
+* This method is **static**.
+
+
+#### Arguments
+* $subject **Pirate\Hooray\string**
+* $formats **array**
 
 
