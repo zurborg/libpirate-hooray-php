@@ -265,7 +265,7 @@ class Str
         /// => ###,
         'M' => 60,
         'S' => 1,
-        'f' => 1/1000,
+        'f' => 1 / 1000,
     ];
 
     /**
@@ -367,7 +367,7 @@ class Str
 
         $texts_l10n = self::DURATION_L10N;
         $languages = array_keys($texts_l10n);
-        $locale  = \Locale::lookup($languages, $locale);
+        $locale = \Locale::lookup($languages, $locale);
         $locales = Arr::get($texts_l10n, $locale, []);
 
         $strings = [];
@@ -398,7 +398,7 @@ class Str
         $last = array_pop($strings);
         if (Arr::ok($strings)) {
             $and = Arr::get($locales, '&', $separator);
-            return implode($separator, $strings) . $and. $last;
+            return implode($separator, $strings) . $and . $last;
         } else {
             return $last;
         }
@@ -456,7 +456,9 @@ class Str
      */
     public static function parseMCF(string $password)
     {
-        if ($match = self::match($password, '/^
+        if ($match = self::match(
+            $password,
+            '/^
             \$
             (?<identifier> [^\$]+ )
 
@@ -480,19 +482,24 @@ class Str
             )?
             \$
             (?<hash> [^\$]+ )
-        $/x')) {
-            $id     = Arr::consume($match, 'identifier');
-            $salt   = Arr::consume($match, 'salt');
-            $hash   = Arr::consume($match, 'hash');
+        $/x'
+        )) {
+            $id = Arr::consume($match, 'identifier');
+            $salt = Arr::consume($match, 'salt');
+            $hash = Arr::consume($match, 'hash');
             $prefix = null;
             $paramstr = null;
             $format = null;
             $params = [];
             if (Arr::get($match, 'params')) {
                 $paramstr = Arr::consume($match, 'params');
-                self::loop(",$paramstr", '/,(?<key>[^=,\$]+)=(?<val>[^=,\$]+)/', function ($pair) use (&$params) {
-                    $params[$pair['key']] = $pair['val'];
-                });
+                self::loop(
+                    ",$paramstr",
+                    '/,(?<key>[^=,\$]+)=(?<val>[^=,\$]+)/',
+                    function ($pair) use (&$params) {
+                        $params[$pair['key']] = $pair['val'];
+                    }
+                );
             }
             $algo = 'unknown';
             if (substr($id, 0, 1) === '2') {
@@ -501,21 +508,21 @@ class Str
                 $salt = substr($hash, 0, 22);
                 $hash = substr($hash, 22);
                 $format = sprintf('$%s$%02d$', $id, $params['rounds']);
-                $prefix = $format.$salt;
+                $prefix = $format . $salt;
             } elseif ($id === '5') {
                 $algo = 'sha256';
                 $format = '$5';
                 if (!is_null($paramstr)) {
-                    $format .= '$'.$paramstr.'$';
+                    $format .= '$' . $paramstr . '$';
                 }
-                $prefix = $format.$salt.'$';
+                $prefix = $format . $salt . '$';
             } elseif ($id === '6') {
                 $algo = 'sha512';
                 $format = '$6';
                 if (!is_null($paramstr)) {
-                    $format .= '$'.$paramstr.'$';
+                    $format .= '$' . $paramstr . '$';
                 }
-                $prefix = $format.$salt.'$';
+                $prefix = $format . $salt . '$';
             } elseif ($id === 'md5plain') {
                 $algo = 'md5';
                 $prefix = $format = '$md5plain$';
@@ -523,13 +530,13 @@ class Str
                 $prefix = $password;
             }
             return [
-                'identifier'    => $id,
-                'algorithm'     => $algo,
-                'salt'          => $salt,
-                'hash'          => $hash,
-                'format'        => $format,
-                'params'        => $params,
-                'prefix'        => $prefix,
+                'identifier' => $id,
+                'algorithm'  => $algo,
+                'salt'       => $salt,
+                'hash'       => $hash,
+                'format'     => $format,
+                'params'     => $params,
+                'prefix'     => $prefix,
             ];
         } else {
             return;
@@ -547,15 +554,15 @@ class Str
         $len = 16;
         $sec = false;
         $bin = \openssl_random_pseudo_bytes($len, $sec);
-        $bin &= hex2bin('ffffffff'.'ffff'.'0fff'.'bfff'.'ffffffffffff');
-        $bin |= hex2bin('00000000'.'0000'.'4000'.'8000'.'000000000000');
+        $bin &= hex2bin('ffffffff' . 'ffff' . '0fff' . 'bfff' . 'ffffffffffff');
+        $bin |= hex2bin('00000000' . '0000' . '4000' . '8000' . '000000000000');
         if ($binary) {
             return $bin;
         }
         $hex = bin2hex($bin);
         $uuid = [];
         $i = 0;
-        foreach ([8,4,4,4,12] as $l) {
+        foreach ([8, 4, 4, 4, 12] as $l) {
             $uuid[] = substr($hex, $i, $l);
             $i += $l;
         }
@@ -610,7 +617,10 @@ class Str
      */
     public static function fceq(string $a, string $b)
     {
-        return \mb_convert_case($a, MB_CASE_LOWER) === \mb_convert_case($b, MB_CASE_LOWER) or \mb_convert_case($a, MB_CASE_UPPER) === \mb_convert_case($b, MB_CASE_UPPER);
+        return \mb_convert_case($a, MB_CASE_LOWER) === \mb_convert_case($b, MB_CASE_LOWER) or \mb_convert_case($a, MB_CASE_UPPER) === \mb_convert_case(
+                $b,
+                MB_CASE_UPPER
+            );
     }
 
     /**
@@ -636,10 +646,14 @@ class Str
 
     public static function enbrace(string $subject, array $formats)
     {
-        Str::replace($subject, '/(?<!\\\\)\{(\w+)\|(.*?)(?<!\\\\)\}/', function ($match) use ($formats) {
-            $format = Arr::get($formats, $match[1]);
-            return sprintf($format, $match[2]);
-        });
+        Str::replace(
+            $subject,
+            '/(?<!\\\\)\{(\w+)\|(.*?)(?<!\\\\)\}/',
+            function ($match) use ($formats) {
+                $format = Arr::get($formats, $match[1]);
+                return sprintf($format, $match[2]);
+            }
+        );
         Str::replace($subject, '/\\\{/', '{');
         Str::replace($subject, '/\\\}/', '}');
         return $subject;

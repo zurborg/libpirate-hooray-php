@@ -366,7 +366,7 @@ class Arr
         if (is_null($array)) {
             return $nvl;
         }
-        return is_array($array) && !self::assoc($array) ? $array : [ $array ];
+        return is_array($array) && !self::assoc($array) ? $array : [$array];
     }
 
 ################################################################################
@@ -542,7 +542,7 @@ class Arr
      * ```
      *
      * @param array &$array1
-     * @param array  $array2
+     * @param array $array2
      * @return void
      */
     public static function merge(array &$array1, array $array2)
