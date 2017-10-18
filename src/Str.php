@@ -67,11 +67,11 @@ class Str
         return explode($delim, mb_substr($path, 1), $limit);
     }
 
-    public static function regexp(string $regexp, bool $delim = false, string $modifiers = '')
+    public static function regexp(string $regexp, bool $fence = false, string $modifiers = '')
     {
         $delim = chr(1);
-        $prefix = $delim ? '^' : '';
-        $suffix = $delim ? '$' : '';
+        $prefix = $fence ? '^' : '';
+        $suffix = $fence ? '$' : '';
         return $delim . $prefix . $regexp . $suffix . $delim . $modifiers;
     }
 
