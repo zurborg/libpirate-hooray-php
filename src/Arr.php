@@ -2,7 +2,7 @@
 /**
  * Santa's little helpers for array accessing and manipulation
  *
- * @copyright 2016 David Zurborg
+ * @copyright 2017 David Zurborg
  * @author    David Zurborg <post@david-zurb.org>
  * @license   https://opensource.org/licenses/ISC The ISC License
  */
