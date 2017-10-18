@@ -9,7 +9,7 @@
 
 namespace Pirate\Hooray;
 
-use \Pirate\Hooray\Arr;
+use Locale;
 
 /**
  * Str is a class containing a bunch of public static functions
@@ -38,7 +38,7 @@ class Str
      */
     public static function ok($string, $nvl = false)
     {
-        return (is_scalar($string) and !is_bool($string)) ? \mb_strlen($string) : $nvl;
+        return (is_scalar($string) and !is_bool($string)) ? mb_strlen($string) : $nvl;
     }
 
     /**
@@ -362,12 +362,12 @@ class Str
         }
 
         if (is_null($locale)) {
-            $locale = \Locale::getDefault();
+            $locale = Locale::getDefault();
         }
 
         $texts_l10n = self::DURATION_L10N;
         $languages = array_keys($texts_l10n);
-        $locale = \Locale::lookup($languages, $locale);
+        $locale = Locale::lookup($languages, $locale);
         $locales = Arr::get($texts_l10n, $locale, []);
 
         $strings = [];
@@ -553,7 +553,7 @@ class Str
     {
         $len = 16;
         $sec = false;
-        $bin = \openssl_random_pseudo_bytes($len, $sec);
+        $bin = openssl_random_pseudo_bytes($len, $sec);
         $bin &= hex2bin('ffffffff' . 'ffff' . '0fff' . 'bfff' . 'ffffffffffff');
         $bin |= hex2bin('00000000' . '0000' . '4000' . '8000' . '000000000000');
         if ($binary) {
@@ -577,7 +577,7 @@ class Str
      */
     public static function upper(string &$subject)
     {
-        $newsubject = \mb_convert_case($subject, MB_CASE_UPPER);
+        $newsubject = mb_convert_case($subject, MB_CASE_UPPER);
         $changed = $newsubject !== $subject;
         $subject = $newsubject;
         return $changed;
@@ -591,7 +591,7 @@ class Str
      */
     public static function lower(string &$subject)
     {
-        $newsubject = \mb_convert_case($subject, MB_CASE_LOWER);
+        $newsubject = mb_convert_case($subject, MB_CASE_LOWER);
         $changed = $newsubject !== $subject;
         $subject = $newsubject;
         return $changed;
@@ -605,7 +605,7 @@ class Str
      */
     public static function foldable(string $subject)
     {
-        return \mb_convert_case($subject, MB_CASE_LOWER) !== \mb_convert_case($subject, MB_CASE_UPPER);
+        return mb_convert_case($subject, MB_CASE_LOWER) !== mb_convert_case($subject, MB_CASE_UPPER);
     }
 
     /**
@@ -617,10 +617,9 @@ class Str
      */
     public static function fceq(string $a, string $b)
     {
-        return \mb_convert_case($a, MB_CASE_LOWER) === \mb_convert_case($b, MB_CASE_LOWER) or \mb_convert_case($a, MB_CASE_UPPER) === \mb_convert_case(
-                $b,
-                MB_CASE_UPPER
-            );
+        $lower = mb_convert_case($a, MB_CASE_LOWER) === mb_convert_case($b, MB_CASE_LOWER);
+        $upper = mb_convert_case($a, MB_CASE_UPPER) === mb_convert_case($b, MB_CASE_UPPER);
+        return $lower or $upper;
     }
 
     /**
