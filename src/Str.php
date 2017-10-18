@@ -9,6 +9,7 @@
 
 namespace Pirate\Hooray;
 
+use InvalidArgumentException;
 use Locale;
 
 /**
@@ -524,9 +525,6 @@ class Str
                     $format .= '$' . $paramstr . '$';
                 }
                 $prefix = $format . $salt . '$';
-            } elseif ($id === 'md5plain') {
-                $algo = 'md5';
-                $prefix = $format = '$md5plain$';
             } else {
                 $prefix = $password;
             }
@@ -539,8 +537,14 @@ class Str
                 'params'     => $params,
                 'prefix'     => $prefix,
             ];
+        } elseif (self::fullmatch($password, '(?:[0-9a-f]{2})+', 'i')) {
+            $bytes = strlen($password) / 2;
+            return [
+                'algorithm' => 'hex',
+                'bytes'     => intval($bytes),
+            ];
         } else {
-            return;
+            throw new InvalidArgumentException("Unrecognized password format");
         }
     }
 
