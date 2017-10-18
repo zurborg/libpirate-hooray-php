@@ -9,7 +9,8 @@
 
 namespace Pirate\Hooray;
 
-use Pirate\Hooray\Str;
+use OutOfBoundsException;
+use Throwable;
 
 /**
  * Arr is a class containing a bunch of public static functions
@@ -188,7 +189,7 @@ class Arr
      *     'foo' => 123
      * ];
      * Arr::assert($A, 'foo', 'meh'); // nothing happens
-     * Arr::assert($A, 'bar', 'this does not exists'); // throw new DomainException('this does not exists')
+     * Arr::assert($A, 'bar', 'this does not exists'); // throw new OutOfBoundsException('this does not exists')
      * $e = new Exception('...');  // just instanciating, not throwing
      * Arr::assert($A, 'bar', $e); // throw $e
      * Arr::assert($A, 'bar', function ($key) { return "bad: $key"; }); // retruns 'bad: bar'
@@ -197,19 +198,19 @@ class Arr
      * @param array $array
      * @param string $key
      * @param mixed $throw
-     * @throws \Throwable
+     * @throws OutOfBoundsException|Throwable
      * @return mixed
      */
     public static function assert(array $array, string $key, $throw)
     {
         if (array_key_exists($key, $array)) {
-            return;
-        } elseif ($throw instanceof \Throwable) {
+            return null;
+        } elseif ($throw instanceof Throwable) {
             throw $throw;
         } elseif (!is_scalar($throw) && is_callable($throw)) {
             return $throw($key);
         } else {
-            throw new \DomainException($throw);
+            throw new OutOfBoundsException($throw);
         }
     }
 
