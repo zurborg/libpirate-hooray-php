@@ -68,6 +68,12 @@ class Str
         return explode($delim, mb_substr($path, 1), $limit);
     }
 
+    /**
+     * @param string $regexp
+     * @param bool $fence
+     * @param string $modifiers
+     * @return string
+     */
     public static function regexp(string $regexp, bool $fence = false, string $modifiers = '')
     {
         $delim = chr(1);
@@ -454,6 +460,8 @@ class Str
      * + `params` - A key-value based array with all parameters found in the string
      *
      * Currently, only format 2 (plus all sub-formats), 5 and 6 are supported. More to come.
+     * @param string $password
+     * @return array
      */
     public static function parseMCF(string $password)
     {
@@ -648,6 +656,11 @@ class Str
         return $subject;
     }
 
+    /**
+     * @param string $subject
+     * @param array $formats
+     * @return string
+     */
     public static function enbrace(string $subject, array $formats)
     {
         Str::replace(
