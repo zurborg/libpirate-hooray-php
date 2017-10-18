@@ -127,6 +127,24 @@ class Arr
     }
 
     /**
+     * Assume the key exists and return its value. Otherwise throw an out-of-bounds exception.
+     * @param array $array
+     * @param string $key
+     * @param string $message
+     * @param int $code
+     * @param Throwable|null $previous
+     * @throws OutOfBoundsException
+     * @return mixed
+     */
+    public static function load(array $array, string $key, string $message, int $code = 0, Throwable $previous = null)
+    {
+        if (!array_key_exists($key, $array)) {
+            throw new OutOfBoundsException($message, $code, $previous);
+        }
+        return $array[$key];
+    }
+
+    /**
      * Set an array element if the key does not exists already
      * Returns the actual value of the element
      *

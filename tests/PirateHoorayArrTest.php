@@ -72,6 +72,26 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
         $this->assertSame(Arr::get($A, 'bla', 'blubb'), 'blubb');
     }
 
+    public function testLoad1()
+    {
+        $A = [
+            'foo' => 123,
+            'bar' => 456,
+        ];
+        $this->assertSame(Arr::load($A, 'foo', 'foo does not exists'), 123);
+        $this->assertSame(Arr::load($A, 'bar', 'bar does not exists'), 456);
+    }
+
+    /**
+     * @expectedException OutOfBoundsException
+     * @expectedExceptionMessage foo does not exists
+     */
+    public function testLoad2()
+    {
+        $A = [];
+        Arr::load($A, 'foo', 'foo does not exists');
+    }
+
     public function testHas()
     {
         $A = [
