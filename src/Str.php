@@ -63,8 +63,8 @@ class Str
         if (!self::ok($path)) {
             return null;
         }
-        $delim = substr($path, 0, 1);
-        return explode($delim, substr($path, 1), $limit);
+        $delim = mb_substr($path, 0, 1);
+        return explode($delim, mb_substr($path, 1), $limit);
     }
 
     public static function regexp(string $regexp, bool $delim = false, string $modifiers = '')
@@ -189,7 +189,7 @@ class Str
     {
         $offset = 0;
         while ($match = self::match($subject, $regexp, $offset)) {
-            $offset += strlen($match[0]);
+            $offset += mb_strlen($match[0]);
             $function($match);
         }
         return;
