@@ -456,9 +456,9 @@ class Str
      */
     public static function parseMCF(string $password)
     {
-        if ($match = self::match(
+        if ($match = self::fullmatch(
             $password,
-            '/^
+            '
             \$
             (?<identifier> [^\$]+ )
 
@@ -482,7 +482,8 @@ class Str
             )?
             \$
             (?<hash> [^\$]+ )
-        $/x'
+        ',
+            'x'
         )) {
             $id = Arr::consume($match, 'identifier');
             $salt = Arr::consume($match, 'salt');
