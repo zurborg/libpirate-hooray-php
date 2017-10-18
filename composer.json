@@ -32,7 +32,6 @@
    "minimum-stability" : "stable",
    "name" : "zurborg/pirate-hooray",
    "require" : {
-      "ext-iconv" : "*",
       "ext-mbstring" : "*",
       "php" : "~7"
    },
