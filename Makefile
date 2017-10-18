@@ -3,26 +3,17 @@ perl=perl
 composer=$(php) composer.phar
 phpcs=$(php) vendor/squizlabs/php_codesniffer/scripts/phpcs
 phpunit=$(php) vendor/phpunit/phpunit/phpunit
-phpdoc=$(php) vendor/phpdocumentor/phpdocumentor/bin/phpdoc
-phpdocmd=$(php) vendor/evert/phpdoc-md/bin/phpdocmd
 yaml2json=$(perl) -MJSON -MYAML -eprint -e'to_json(YAML::Load(join""=><>),{pretty=>1,canonical=>1})'
 getversion=$(perl) -MYAML -eprint -e'YAML::Load(join""=><>)->{version}'
 V=`$(getversion) < composer.yaml`
 
-all: | vendor test documentation
+all: | vendor test
 
 info:
 	@echo $(php)
 	@$(php) -v
 	@echo $(perl)
 	@$(perl) -v
-
-documentation:
-	-git rm -f --cached docs/*.md
-	$(phpdoc) -d src/ -t docs/ --template=xml --visibility=public >phpdoc.out
-	$(phpdocmd) docs/structure.xml docs/ > phpdocmd.out
-	git add docs/*.md
-	git clean -xdf docs/
 
 clean:
 	git clean -xdf -e composer.phar -e vendor
@@ -51,4 +42,4 @@ release:
 	git tag -m "Release version $V" -s v$V
 	git push --tags
 
-.PHONY: all info documentation clean test archive release
+.PHONY: all info clean test archive release

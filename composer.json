@@ -4,7 +4,6 @@
          ".*",
          "*~",
          "vendor/",
-         "docs/",
          "Makefile",
          "composer.lock",
          "composer.phar",
@@ -33,12 +32,11 @@
    "minimum-stability" : "stable",
    "name" : "zurborg/pirate-hooray",
    "require" : {
+      "ext-iconv" : "*",
       "ext-mbstring" : "*",
       "php" : "~7"
    },
    "require-dev" : {
-      "evert/phpdoc-md" : "~0",
-      "phpdocumentor/phpdocumentor" : "~2",
       "phpunit/phpunit" : "~5",
       "squizlabs/php_codesniffer" : "~2"
    },
