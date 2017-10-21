@@ -611,6 +611,21 @@ class Str
     }
 
     /**
+     * In-place tr-operation
+     * @param string $subject
+     * @param string $from
+     * @param string $to
+     * @return bool true if subject is changed
+     */
+    public static function tr(string &$subject, string $from, string $to)
+    {
+        $newsubject = strtr($subject, $from, $to);
+        $changed = $newsubject !== $subject;
+        $subject = $newsubject;
+        return $changed;
+    }
+
+    /**
      * Checks whether a string is foldable, i.e. at least one letter can be converted to upper or to lower case, unicode-aware
      *
      * @param string $subject
