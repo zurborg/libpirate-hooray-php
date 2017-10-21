@@ -1,8 +1,8 @@
 php=php
 perl=perl
 composer=$(php) composer.phar
-phpcs=$(php) vendor/squizlabs/php_codesniffer/scripts/phpcs
-phpunit=$(php) vendor/phpunit/phpunit/phpunit
+phpcs=$(php) vendor/bin/phpcs
+phpunit=$(php) vendor/bin/phpunit
 yaml2json=$(perl) -MJSON -MYAML -eprint -e'to_json(YAML::Load(join""=><>),{pretty=>1,canonical=>1})'
 getversion=$(perl) -MYAML -eprint -e'YAML::Load(join""=><>)->{version}'
 V=`$(getversion) < composer.yaml`
