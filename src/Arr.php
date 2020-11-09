@@ -475,6 +475,36 @@ class Arr
         return;
     }
 
+    /**
+     * Unset a deep value
+     *
+     * ```php
+     * $A = [
+     *     'foo' => [
+     *         'bar' => 123
+     *     ]
+     * ];
+     * Arr::unsetDeep($A, [ 'foo', 'bar' ]); // $A['foo'] is now empty ([])
+     * Arr::unsetDeep($A, [ 'foo' ]); // $A is now empty ([])
+     * ```
+     *
+     * @param array &$array
+     * @param string[] $keys
+     * @return void
+     */
+    public static function unsetDeep(array &$array, array $keys)
+    {
+        $last = array_pop($keys);
+        foreach ($keys as $key) {
+            if (!is_array(self::get($array, $key))) {
+                $array[$key] = [];
+            }
+            $array = &$array[$key];
+        }
+        unset($array[$last]);
+        return;
+    }
+
 ################################################################################
 
     /**
@@ -545,6 +575,28 @@ class Arr
     public static function setPath(array &$array, string $path, $value)
     {
         self::setDeep($array, Str::split($path), $value);
+        return;
+    }
+
+    /**
+     * Path variant of unsetDeep()
+     *
+     * ```php
+     * $A = [
+     *     'foo' => [
+     *         'bar' => 123
+     *     ]
+     * ];
+     * Arr::unsetPath($A, '/foo/bar'); // $A['foo'] is now empty ([])
+     * ```
+     *
+     * @param array &$array
+     * @param string $path
+     * @return void
+     */
+    public static function unsetPath(array &$array, string $path)
+    {
+        self::unsetDeep($array, Str::split($path));
         return;
     }
 

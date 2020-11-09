@@ -268,6 +268,19 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
         $this->assertSame($A, ['foo' => 789]);
     }
 
+    public function testUnsetDeep()
+    {
+        $A = [
+            'foo' => [
+                'bar' => 123,
+            ],
+        ];
+        Arr::unsetDeep($A, ['foo', 'bar']);
+        $this->assertSame($A, ['foo' => []]);
+        Arr::unsetDeep($A, ['foo']);
+        $this->assertSame($A, []);
+    }
+
     public function testGetPath()
     {
         $A = [
@@ -302,6 +315,19 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
         $this->assertSame($A, ['foo' => ['bar' => 456]]);
         Arr::setPath($A, '/foo', 789);
         $this->assertSame($A, ['foo' => 789]);
+    }
+
+    public function testUnsetPath()
+    {
+        $A = [
+            'foo' => [
+                'bar' => 123,
+            ],
+        ];
+        Arr::unsetPath($A, '/foo/bar');
+        $this->assertSame($A, ['foo' => []]);
+        Arr::unsetPath($A, '/foo');
+        $this->assertSame($A, []);
     }
 
     public function testMerge()
