@@ -9,6 +9,7 @@
 
 namespace Pirate\Hooray;
 
+use DateTimeInterface;
 use InvalidArgumentException;
 use Locale;
 
@@ -689,5 +690,19 @@ class Str
         Str::replace($subject, '/\\\{/', '{');
         Str::replace($subject, '/\\\}/', '}');
         return $subject;
+    }
+
+    /**
+     * Wrapper for date_format
+     *
+     * @param DateTimeInterface|null $dt
+     * @param string $format
+     * @param string|null $default
+     * @see date_format
+     * @return string|null
+     */
+    public static function ftime(DateTimeInterface $dt = null, string $format, string $default = null)
+    {
+        return is_null($dt) ? $default : $dt->format($format);
     }
 }

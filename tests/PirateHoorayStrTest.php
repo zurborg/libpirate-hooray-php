@@ -2,6 +2,7 @@
 
 namespace Pirate\Hooray;
 
+use DateTimeImmutable;
 use PHPUnit_Framework_TestCase;
 
 class PirateHoorayStrTest extends PHPUnit_Framework_TestCase
@@ -213,5 +214,15 @@ class PirateHoorayStrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Str::tr($str, 'bd', 'ef'));
         $this->assertFalse(Str::tr($str, 'bd', 'ef'));
         $this->assertSame('aaaeeecccfff', $str);
+    }
+
+    public function testFtime()
+    {
+        $this->assertSame(null, Str::ftime(null, ''));
+        $this->assertSame(null, Str::ftime(null, '', null));
+        $this->assertSame('a', Str::ftime(null, '', 'a'));
+        $this->assertSame('b', Str::ftime(new DateTimeImmutable(), '\b'));
+        $this->assertSame('c', Str::ftime(new DateTimeImmutable(), '\c', 'BAD'));
+        $this->assertSame('2020-03-02T00:00:00+00:00', Str::ftime(new DateTimeImmutable('2020-02-30T24:00:00Z'), 'c', 'BAD'));
     }
 }
