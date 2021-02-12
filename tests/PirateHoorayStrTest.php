@@ -232,4 +232,21 @@ class PirateHoorayStrTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(Str::fceq('a', 'B'));
         $this->assertTrue(Str::fceq('ç', 'Ç'));
     }
+
+    public function testConvertable()
+    {
+        $to = 'ascii';
+        for ($i = 0; $i < 0x80; $i++) {
+            $this->assertTrue(Str::convertable(mb_chr($i), $to, 'utf8'), sprintf('Convert codepoint %d to %s', $i, $to));
+        }
+        $i = 0x80;
+        $this->assertFalse(Str::convertable(mb_chr($i), $to, 'utf8'), sprintf('Convert codepoint %d to %s', $i, $to));
+
+        $to = 'ISO-8859-1';
+        for ($i = 0; $i < 0x100; $i++) {
+            $this->assertTrue(Str::convertable(mb_chr($i), $to, 'utf8'), sprintf('Convert codepoint %d to %s', $i, $to));
+        }
+        $i = 0x100;
+        $this->assertFalse(Str::convertable(mb_chr($i), $to, 'utf8'), sprintf('Convert codepoint %d to %s', $i, $to));
+    }
 }
