@@ -12,6 +12,7 @@ namespace Pirate\Hooray;
 use DateTimeInterface;
 use InvalidArgumentException;
 use Locale;
+use RuntimeException;
 
 /**
  * Str is a class containing a bunch of public static functions
@@ -419,9 +420,9 @@ class Str
      *
      * @param int $rounds
      * @param bool $use_strong
-     * @throws RuntimeException
-     * @throws InvalidArgumentException
      * @return string
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public static function salt2y(int $rounds = 4, bool $use_strong = false): string
     {
@@ -715,8 +716,8 @@ class Str
      * @param DateTimeInterface|null $dt
      * @param string $format
      * @param string|null $default
-     * @see date_format
      * @return string|mixed
+     * @see date_format
      */
     public static function ftime(?DateTimeInterface $dt, string $format, string $default = null)
     {

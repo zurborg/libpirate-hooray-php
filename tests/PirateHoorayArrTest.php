@@ -2,6 +2,7 @@
 
 namespace Pirate\Hooray;
 
+use Exception;
 use InvalidArgumentException;
 use OutOfBoundsException;
 use PHPUnit_Framework_TestCase;
