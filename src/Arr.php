@@ -29,10 +29,10 @@ class Arr
      * Arr::ok('foobar');       // returns false
      * ```
      *
-     * @see is_array()
      * @param mixed $array
      * @param mixed $nvl
      * @return int|false
+     * @see is_array()
      */
     public static function ok($array, $nvl = false)
     {
@@ -98,12 +98,12 @@ class Arr
     /**
      * Wrapper for `array_key_exists()`
      *
-     * @see array_key_exists()
      * @param array $array
      * @param string $key
      * @return boolean
+     * @see array_key_exists()
      */
-    public static function has(array $array, string $key)
+    public static function has(array $array, string $key): bool
     {
         return array_key_exists($key, $array) ? true : false;
     }
@@ -118,11 +118,11 @@ class Arr
      *
      * If the array is an associative array, (or there is no numeric key in the range of 0 .. n-1) the default value will be returned,
      *
-     * @see Arr::get()
      * @param array $array
      * @param int $index
      * @param mixed $default
      * @return mixed
+     * @see Arr::get()
      */
     public static function getIndex(array $array, int $index, $default = null)
     {
@@ -137,8 +137,8 @@ class Arr
      * @param string $message
      * @param int $code
      * @param Throwable|null $previous
-     * @throws OutOfBoundsException
      * @return mixed
+     * @throws OutOfBoundsException
      */
     public static function load(array $array, string $key, string $message, int $code = 0, Throwable $previous = null)
     {
@@ -220,8 +220,8 @@ class Arr
      * @param array $array
      * @param string $key
      * @param mixed $throw
-     * @throws OutOfBoundsException|Throwable
      * @return mixed
+     * @throws OutOfBoundsException|Throwable
      */
     public static function assert(array $array, string $key, $throw)
     {
@@ -247,13 +247,13 @@ class Arr
      * Arr::in($A, '34'); // false
      * ```
      *
-     * @see in_array()
      * @param array $haystack
      * @param mixed $needle
      * @param bool $strict
      * @return bool
+     * @see in_array()
      */
-    public static function in(array $haystack, $needle, bool $strict = true)
+    public static function in(array $haystack, $needle, bool $strict = true): bool
     {
         return in_array($needle, $haystack, $strict);
     }
@@ -272,14 +272,14 @@ class Arr
      * Arr::is($A, 'yyy', null);  // returns true, since Arr::get returns null as default value if key does not exists
      * ```
      *
-     * @see Arr::get()
      * @param array $array
      * @param string $key
      * @param mixed $expect
      * @param bool $strict
      * @return bool
+     * @see Arr::get()
      */
-    public static function is(array $array, string $key, $expect, bool $strict = true)
+    public static function is(array $array, string $key, $expect, bool $strict = true): bool
     {
         $value = self::get($array, $key);
         return $strict ? $value === $expect : $value == $expect;
@@ -300,10 +300,10 @@ class Arr
      * @param bool $strict
      * @return bool
      */
-    public static function any(array $array, array $keys, bool $strict = true)
+    public static function any(array $array, array $keys, bool $strict = true): bool
     {
         if (!count($keys)) {
-            return null;
+            return false;
         }
         foreach ($keys as $key) {
             if (in_array($key, $array, $strict)) {
@@ -328,10 +328,10 @@ class Arr
      * @param bool $strict
      * @return bool
      */
-    public static function all(array $array, array $keys, bool $strict = true)
+    public static function all(array $array, array $keys, bool $strict = true): bool
     {
         if (!count($keys)) {
-            return null;
+            return false;
         }
         if (!count($array)) {
             return false;
@@ -358,10 +358,10 @@ class Arr
      * @param array $array
      * @return bool
      */
-    public static function assoc(array $array)
+    public static function assoc(array $array): bool
     {
         if (!count($array)) {
-            return null;
+            return false;
         }
         foreach (array_keys($array) as $key => $value) {
             if ($key !== $value) {
@@ -402,7 +402,7 @@ class Arr
      * @param $new_value
      * @return mixed
      */
-    public static function set(&$array, $key, $new_value)
+    public static function set(array &$array, $key, $new_value)
     {
         $old_value = array_key_exists($key, $array) ? $array[$key] : null;
         $array[$key] = $new_value;
@@ -424,11 +424,11 @@ class Arr
      * Arr::getDeep($A, [ 'bar', 'foo' ], 456); // returns 456
      * ```
      *
-     * @see Arr::get()
      * @param array $array
      * @param string[] $keys
      * @param mixed $default
      * @return mixed
+     * @see Arr::get()
      */
     public static function getDeep(array $array, array $keys, $default = null)
     {
@@ -454,14 +454,14 @@ class Arr
      * Arr::isDeep($A, [ 'foo', 'bar' ], 123); // returns true
      * ```
      *
-     * @see Arr::getDeep()
      * @param array $array
      * @param string[] $keys
      * @param mixed $expect
      * @param bool $strict
      * @return bool
+     * @see Arr::getDeep()
      */
-    public static function isDeep(array $array, array $keys, $expect, bool $strict = true)
+    public static function isDeep(array $array, array $keys, $expect, bool $strict = true): bool
     {
         $value = self::getDeep($array, $keys);
         return $strict ? $value === $expect : $value == $expect;
@@ -480,11 +480,11 @@ class Arr
      * Arr::setDeep($A, [ 'foo' ], 789); // $A['foo'] is now 789
      * ```
      *
-     * @see Arr::set()
      * @param array &$array
      * @param string[] $keys
      * @param mixed $value
      * @return mixed old vlaue
+     * @see Arr::set()
      */
     public static function setDeep(array &$array, array $keys, $value)
     {
@@ -513,10 +513,10 @@ class Arr
      * Arr::unsetDeep($A, [ 'foo' ]); // $A is now empty ([])
      * ```
      *
-     * @see Arr::consume()
      * @param array &$array
      * @param string[] $keys
      * @return mixed old value
+     * @see Arr::consume()
      */
     public static function unsetDeep(array &$array, array $keys)
     {
@@ -552,12 +552,12 @@ class Arr
      *
      * See also `\Pirate\Hooray\Str::split()`
      *
-     * @see Arr::getDeep()
-     * @see Str::split()
      * @param array $array
      * @param string $path
      * @param mixed $default
      * @return mixed
+     * @see Arr::getDeep()
+     * @see Str::split()
      */
     public static function getPath(array $array, string $path, $default = null)
     {
@@ -576,14 +576,14 @@ class Arr
      * Arr::isPath($A, '/foo/bar', 123); // returns true
      * ```
      *
-     * @see Arr::getPath()
      * @param array $array
      * @param string $path
      * @param mixed $expect
      * @param bool $strict
      * @return bool
+     * @see Arr::getPath()
      */
-    public static function isPath(array $array, string $path, $expect, bool $strict = true)
+    public static function isPath(array $array, string $path, $expect, bool $strict = true): bool
     {
         $value = self::getPath($array, $path);
         return $strict ? $value === $expect : $value == $expect;
@@ -601,12 +601,12 @@ class Arr
      * Arr::setPath($A, '/foo/bar', 456); // retuns $A['foo']['bar'] is now 456
      * ```
      *
-     * @see Arr::setDeep()
-     * @see Str::split()
      * @param array &$array
      * @param string $path
      * @param mixed $value
      * @return mixed old value
+     * @see Arr::setDeep()
+     * @see Str::split()
      */
     public static function setPath(array &$array, string $path, $value)
     {
@@ -625,11 +625,11 @@ class Arr
      * Arr::unsetPath($A, '/foo/bar'); // $A['foo'] is now empty ([])
      * ```
      *
-     * @see Arr::unsetDeep()
-     * @see Str::split()
      * @param array &$array
      * @param string $path
      * @return mixed old value
+     * @see Str::split()
+     * @see Arr::unsetDeep()
      */
     public static function unsetPath(array &$array, string $path)
     {
@@ -648,15 +648,14 @@ class Arr
      * Arr::merge($A, [ 'foo' => 456 ]);
      * ```
      *
-     * @see array_merge()
      * @param array &$array1
      * @param array $array2
      * @return void
+     * @see array_merge()
      */
-    public static function merge(array &$array1, array $array2)
+    public static function merge(array &$array1, array $array2): void
     {
         $array1 = array_merge($array1, $array2);
-        return;
     }
 
     /**
@@ -670,24 +669,23 @@ class Arr
      * // $A now contains [ 'bar' => 123, 'foo' => 123 ]
      * ```
      *
-     * @see array_merge()
      * @param array &$array
      * @param array $defaults
      * @return void
+     * @see array_merge()
      */
-    public static function defaults(array &$array, array $defaults)
+    public static function defaults(array &$array, array $defaults): void
     {
         $array = array_merge($defaults, $array);
-        return;
     }
 
     /**
      * Remove first item of array and return it
      *
-     * @see array_shift()
      * @param array &$array
      * @param mixed $default Default value if array is empty
      * @return mixed
+     * @see array_shift()
      */
     public static function shift(array &$array, $default = null)
     {
@@ -697,10 +695,10 @@ class Arr
     /**
      * Remove last item of array and return it
      *
-     * @see array_pop()
      * @param array &$array
      * @param mixed $default Default value if array is empty
      * @return mixed
+     * @see array_pop()
      */
     public static function pop(array &$array, $default = null)
     {
@@ -710,13 +708,12 @@ class Arr
     /**
      * Reverse the key-order of an array
      *
-     * @see array_reverse()
      * @param array &$array
      * @return void
+     * @see array_reverse()
      */
-    public static function reverse(array &$array)
+    public static function reverse(array &$array): void
     {
         $array = array_reverse($array);
-        return;
     }
 }

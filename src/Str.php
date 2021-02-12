@@ -36,7 +36,7 @@ class Str
      *
      * @param mixed $string
      * @param mixed $nvl
-     * @return int
+     * @return int|false|mixed
      */
     public static function ok($string, $nvl = false)
     {
@@ -58,7 +58,7 @@ class Str
      *
      * @param string $path
      * @param int $limit
-     * @return string[]
+     * @return string[]|null
      */
     public static function split(string $path, int $limit = PHP_INT_MAX)
     {
@@ -75,7 +75,7 @@ class Str
      * @param string $modifiers
      * @return string
      */
-    public static function regexp(string $regexp, bool $fence = false, string $modifiers = '')
+    public static function regexp(string $regexp, bool $fence = false, string $modifiers = ''): string
     {
         $delim = chr(1);
         $prefix = $fence ? '^' : '';
@@ -99,7 +99,7 @@ class Str
      * @param string $subject
      * @param string $regexp regular expression
      * @param int $offset string offset
-     * @return string[]
+     * @return string[]|null
      */
     public static function match(string $subject, string $regexp, int $offset = 0)
     {
@@ -118,7 +118,7 @@ class Str
      * @param string $subject
      * @param string $regexp regular expression
      * @param int $offset string offset
-     * @return string[]
+     * @return string[]|null
      */
     public static function matchall(string $subject, string $regexp, int $offset = 0)
     {
@@ -138,7 +138,7 @@ class Str
      * @param string $subject
      * @param string $regexp regular expression
      * @param string $modifiers optional modifiers
-     * @return string[]
+     * @return string[]|null
      */
     public static function fullmatch(string $subject, string $regexp, string $modifiers = '')
     {
@@ -155,14 +155,13 @@ class Str
      * @param int $limit
      * @return void
      */
-    public static function replace(string &$subject, string $regexp, $replacement, int $limit = -1)
+    public static function replace(string &$subject, string $regexp, $replacement, int $limit = -1): void
     {
         if (!is_scalar($replacement) && is_callable($replacement)) {
             $subject = preg_replace_callback($regexp, $replacement, $subject, $limit);
         } else {
             $subject = preg_replace($regexp, $replacement, $subject, $limit);
         }
-        return;
     }
 
     /**
@@ -173,10 +172,9 @@ class Str
      * @param int $limit
      * @return void
      */
-    public static function remove(string &$subject, string $regexp, int $limit = -1)
+    public static function remove(string &$subject, string $regexp, int $limit = -1): void
     {
         self::replace($subject, $regexp, '', $limit);
-        return;
     }
 
     /**
@@ -193,14 +191,13 @@ class Str
      * @param callable $function
      * @return void
      */
-    public static function loop(string $subject, string $regexp, callable $function)
+    public static function loop(string $subject, string $regexp, callable $function): void
     {
         $offset = 0;
         while ($match = self::match($subject, $regexp, $offset)) {
             $offset += mb_strlen($match[0]);
             $function($match);
         }
-        return;
     }
 
     /**
@@ -221,7 +218,7 @@ class Str
      * @param string $search
      * @return string
      */
-    public static function pluralize(string $text, int $amount, string $search = '$')
+    public static function pluralize(string $text, int $amount, string $search = '$'): string
     {
         self::replace(
             $text,
@@ -295,7 +292,7 @@ class Str
      * @param float $seconds
      * @return int[]
      */
-    public static function timechunks(float $seconds)
+    public static function timechunks(float $seconds): array
     {
         if ($seconds < 0) {
             $seconds = 0 - $seconds;
@@ -360,10 +357,10 @@ class Str
      *
      * @param float $seconds
      * @param int $precision
-     * @param string $locale
+     * @param ?string $locale
      * @return string
      */
-    public static function duration(float $seconds, int $precision = 2, string $locale = null)
+    public static function duration(float $seconds, int $precision = 2, string $locale = null): string
     {
         if (!$seconds) {
             return '';
@@ -422,15 +419,17 @@ class Str
      *
      * @param int $rounds
      * @param bool $use_strong
+     * @throws RuntimeException
+     * @throws InvalidArgumentException
      * @return string
      */
-    public static function salt2y(int $rounds = 4, bool $use_strong = false)
+    public static function salt2y(int $rounds = 4, bool $use_strong = false): string
     {
         $bytes = 18;
         $was_strong = false;
         $rand = base64_encode(openssl_random_pseudo_bytes($bytes, $was_strong));
         if ($use_strong && !$was_strong) {
-            throw new \RuntimeException("Insufficient cryptographically strong random data");
+            throw new RuntimeException("Insufficient cryptographically strong random data");
         }
         $rand = str_replace('+', '.', substr($rand, 2, 22));
         return sprintf('$2y$%02d$%22s', $rounds, $rand);
@@ -468,7 +467,7 @@ class Str
      * @param string $password
      * @return array
      */
-    public static function parseMCF(string $password)
+    public static function parseMCF(string $password): array
     {
         if ($match = self::fullmatch(
             $password,
@@ -567,7 +566,7 @@ class Str
      * @param bool $binary return binary representation instead of string representation
      * @return string
      */
-    public static function uuidV4(bool $binary = false)
+    public static function uuidV4(bool $binary = false): string
     {
         $len = 16;
         $bin = openssl_random_pseudo_bytes($len);
@@ -592,7 +591,7 @@ class Str
      * @param string &$subject
      * @return bool true if subject is changed
      */
-    public static function upper(string &$subject)
+    public static function upper(string &$subject): bool
     {
         $newsubject = mb_convert_case($subject, MB_CASE_UPPER);
         $changed = $newsubject !== $subject;
@@ -606,7 +605,7 @@ class Str
      * @param string &$subject
      * @return bool true if subject is changed
      */
-    public static function lower(string &$subject)
+    public static function lower(string &$subject): bool
     {
         $newsubject = mb_convert_case($subject, MB_CASE_LOWER);
         $changed = $newsubject !== $subject;
@@ -621,7 +620,7 @@ class Str
      * @param string $to
      * @return bool true if subject is changed
      */
-    public static function tr(string &$subject, string $from, string $to)
+    public static function tr(string &$subject, string $from, string $to): bool
     {
         $newsubject = strtr($subject, $from, $to);
         $changed = $newsubject !== $subject;
@@ -635,7 +634,7 @@ class Str
      * @param string $subject
      * @return bool
      */
-    public static function foldable(string $subject)
+    public static function foldable(string $subject): bool
     {
         return mb_convert_case($subject, MB_CASE_LOWER) !== mb_convert_case($subject, MB_CASE_UPPER);
     }
@@ -647,7 +646,7 @@ class Str
      * @param string $b
      * @return bool
      */
-    public static function fceq(string $a, string $b)
+    public static function fceq(string $a, string $b): bool
     {
         if (PHP_VERSION_ID >= 70300) {
             return mb_convert_case($a, MB_CASE_FOLD) === mb_convert_case($b, MB_CASE_FOLD);
@@ -670,7 +669,7 @@ class Str
      * @param string $suffix
      * @return string
      */
-    public static function surround(string $subject, string $prefix, string $suffix)
+    public static function surround(string $subject, string $prefix, string $suffix): string
     {
         Str::replace($subject, '/(?<!\\\\)\{/', $prefix);
         Str::replace($subject, '/\\\{/', '{');
@@ -684,7 +683,7 @@ class Str
      * @param array $formats
      * @return string
      */
-    public static function enbrace(string $subject, array $formats)
+    public static function enbrace(string $subject, array $formats): string
     {
         Str::replace(
             $subject,
@@ -706,9 +705,9 @@ class Str
      * @param string $format
      * @param string|null $default
      * @see date_format
-     * @return string|null
+     * @return string|mixed
      */
-    public static function ftime(DateTimeInterface $dt = null, string $format, string $default = null)
+    public static function ftime(?DateTimeInterface $dt, string $format, string $default = null)
     {
         return is_null($dt) ? $default : $dt->format($format);
     }
