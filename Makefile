@@ -1,6 +1,6 @@
 php=php
 perl=perl
-composer=$(php) composer.phar
+composer=composer
 phpcs=$(php) vendor/bin/phpcs
 phpunit=$(php) vendor/bin/phpunit
 yaml2json=$(perl) -MJSON -MYAML -eprint -e'to_json(YAML::Load(join""=><>),{pretty=>1,canonical=>1})'
@@ -16,16 +16,14 @@ info:
 	@$(perl) -v
 
 clean:
-	git clean -xdf -e composer.phar -e vendor
+	git clean -xdf -e vendor
 
 vendor: composer.json
-	$(composer) --prefer-dist install >composer.out
+	$(composer) --prefer-dist install
 
 composer.json: composer.yaml
-	$(yaml2json) < $< > $@~
-	mv $@~ $@
-	-rm composer.lock
-	git add $@
+	$(yaml2json) < $? > $@
+	git add -v -- $@
 
 test: lint
 	$(phpcs) --warning-severity=0 --standard=PSR2 src tests
