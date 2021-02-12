@@ -15,8 +15,11 @@ authors:
     homepage: https://zurborg.github.io/
 
 require:
-  php: '~7'
+  php: '^7.4'
+  ext-intl: '*'
+  ext-iconv: '*'
   ext-mbstring: '*'
+  ext-openssl: '*'
 
 require-dev:
   phpunit/phpunit: '~5'
