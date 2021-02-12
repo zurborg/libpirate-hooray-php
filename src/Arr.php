@@ -29,6 +29,7 @@ class Arr
      * Arr::ok('foobar');       // returns false
      * ```
      *
+     * @see is_array()
      * @param mixed $array
      * @param mixed $nvl
      * @return int|false
@@ -52,7 +53,7 @@ class Arr
      *
      * @param array $array
      * @param int $index
-     * @return int
+     * @return int|null
      */
     public static function index(array $array, int $index)
     {
@@ -97,6 +98,7 @@ class Arr
     /**
      * Wrapper for `array_key_exists()`
      *
+     * @see array_key_exists()
      * @param array $array
      * @param string $key
      * @return boolean
@@ -116,6 +118,7 @@ class Arr
      *
      * If the array is an associative array, (or there is no numeric key in the range of 0 .. n-1) the default value will be returned,
      *
+     * @see Arr::get()
      * @param array $array
      * @param int $index
      * @param mixed $default
@@ -128,6 +131,7 @@ class Arr
 
     /**
      * Assume the key exists and return its value. Otherwise throw an out-of-bounds exception.
+     *
      * @param array $array
      * @param string $key
      * @param string $message
@@ -243,6 +247,7 @@ class Arr
      * Arr::in($A, '34'); // false
      * ```
      *
+     * @see in_array()
      * @param array $haystack
      * @param mixed $needle
      * @param bool $strict
@@ -267,6 +272,7 @@ class Arr
      * Arr::is($A, 'yyy', null);  // returns true, since Arr::get returns null as default value if key does not exists
      * ```
      *
+     * @see Arr::get()
      * @param array $array
      * @param string $key
      * @param mixed $expect
@@ -388,6 +394,21 @@ class Arr
         return is_array($array) && !self::assoc($array) ? $array : [$array];
     }
 
+    /**
+     * Set a new value in an array and return old value
+     *
+     * @param $array
+     * @param $key
+     * @param $new_value
+     * @return mixed
+     */
+    public static function set(&$array, $key, $new_value)
+    {
+        $old_value = array_key_exists($key, $array) ? $array[$key] : null;
+        $array[$key] = $new_value;
+        return $old_value;
+    }
+
 ################################################################################
 
     /**
@@ -403,6 +424,7 @@ class Arr
      * Arr::getDeep($A, [ 'bar', 'foo' ], 456); // returns 456
      * ```
      *
+     * @see Arr::get()
      * @param array $array
      * @param string[] $keys
      * @param mixed $default
@@ -432,6 +454,7 @@ class Arr
      * Arr::isDeep($A, [ 'foo', 'bar' ], 123); // returns true
      * ```
      *
+     * @see Arr::getDeep()
      * @param array $array
      * @param string[] $keys
      * @param mixed $expect
@@ -445,7 +468,7 @@ class Arr
     }
 
     /**
-     * Set a deep value
+     * Set a deep value and return old value
      *
      * ```php
      * $A = [
@@ -457,10 +480,11 @@ class Arr
      * Arr::setDeep($A, [ 'foo' ], 789); // $A['foo'] is now 789
      * ```
      *
+     * @see Arr::set()
      * @param array &$array
      * @param string[] $keys
      * @param mixed $value
-     * @return void
+     * @return mixed old vlaue
      */
     public static function setDeep(array &$array, array $keys, $value)
     {
@@ -471,12 +495,13 @@ class Arr
             }
             $array = &$array[$key];
         }
+        $old = array_key_exists($last, $array) ? $array[$last] : null;
         $array[$last] = $value;
-        return;
+        return $old;
     }
 
     /**
-     * Unset a deep value
+     * Unset a deep value and return old value
      *
      * ```php
      * $A = [
@@ -488,9 +513,10 @@ class Arr
      * Arr::unsetDeep($A, [ 'foo' ]); // $A is now empty ([])
      * ```
      *
+     * @see Arr::consume()
      * @param array &$array
      * @param string[] $keys
-     * @return void
+     * @return mixed old value
      */
     public static function unsetDeep(array &$array, array $keys)
     {
@@ -501,8 +527,13 @@ class Arr
             }
             $array = &$array[$key];
         }
-        unset($array[$last]);
-        return;
+        if (array_key_exists($last, $array)) {
+            $value = $array[$last];
+            unset($array[$last]);
+            return $value;
+        } else {
+            return null;
+        }
     }
 
 ################################################################################
@@ -521,6 +552,8 @@ class Arr
      *
      * See also `\Pirate\Hooray\Str::split()`
      *
+     * @see Arr::getDeep()
+     * @see Str::split()
      * @param array $array
      * @param string $path
      * @param mixed $default
@@ -543,6 +576,7 @@ class Arr
      * Arr::isPath($A, '/foo/bar', 123); // returns true
      * ```
      *
+     * @see Arr::getPath()
      * @param array $array
      * @param string $path
      * @param mixed $expect
@@ -567,15 +601,16 @@ class Arr
      * Arr::setPath($A, '/foo/bar', 456); // retuns $A['foo']['bar'] is now 456
      * ```
      *
+     * @see Arr::setDeep()
+     * @see Str::split()
      * @param array &$array
      * @param string $path
      * @param mixed $value
-     * @return void
+     * @return mixed old value
      */
     public static function setPath(array &$array, string $path, $value)
     {
-        self::setDeep($array, Str::split($path), $value);
-        return;
+        return self::setDeep($array, Str::split($path), $value);
     }
 
     /**
@@ -590,14 +625,15 @@ class Arr
      * Arr::unsetPath($A, '/foo/bar'); // $A['foo'] is now empty ([])
      * ```
      *
+     * @see Arr::unsetDeep()
+     * @see Str::split()
      * @param array &$array
      * @param string $path
-     * @return void
+     * @return mixed old value
      */
     public static function unsetPath(array &$array, string $path)
     {
-        self::unsetDeep($array, Str::split($path));
-        return;
+        return self::unsetDeep($array, Str::split($path));
     }
 
 ################################################################################
@@ -612,6 +648,7 @@ class Arr
      * Arr::merge($A, [ 'foo' => 456 ]);
      * ```
      *
+     * @see array_merge()
      * @param array &$array1
      * @param array $array2
      * @return void
@@ -633,6 +670,7 @@ class Arr
      * // $A now contains [ 'bar' => 123, 'foo' => 123 ]
      * ```
      *
+     * @see array_merge()
      * @param array &$array
      * @param array $defaults
      * @return void
@@ -646,6 +684,7 @@ class Arr
     /**
      * Remove first item of array and return it
      *
+     * @see array_shift()
      * @param array &$array
      * @param mixed $default Default value if array is empty
      * @return mixed
@@ -658,6 +697,7 @@ class Arr
     /**
      * Remove last item of array and return it
      *
+     * @see array_pop()
      * @param array &$array
      * @param mixed $default Default value if array is empty
      * @return mixed
@@ -670,6 +710,7 @@ class Arr
     /**
      * Reverse the key-order of an array
      *
+     * @see array_reverse()
      * @param array &$array
      * @return void
      */
