@@ -723,4 +723,79 @@ class Str
     {
         return is_null($dt) ? $default : $dt->format($format);
     }
+
+    /**
+     * Strip undecodable characters from a string (in-place)
+     *
+     * @param string $subject
+     * @param string $encoding defaults to UTF-8
+     */
+    public static function strip(string &$subject, string $encoding = 'utf8'): void
+    {
+        $orig = mb_substitute_character();
+        try {
+            mb_substitute_character('none');
+            $subject = mb_convert_encoding($subject, $encoding, $encoding);
+        } finally {
+            mb_substitute_character($orig);
+        }
+    }
+
+    /**
+     * Convert string to another encoding with transliteration
+     *
+     * Non-covertable characters can be replaced by $replacement. It defaults to null, so the replacement character is left untouched. An empty string means non-covertable characters are ignored.
+     *
+     * @param string $in UTF-8 encoded string
+     * @param string $to Target encoding
+     * @param ?string $replacement Replacement character
+     * @return string
+     */
+    public static function translit(string $in, string $to, string $replacement = null): string
+    {
+        // This function only accepts UTF-8 strings
+        $from = 'utf8';
+
+        // Remove all non-representable characters from input string...
+        self::strip($in, $from);
+
+        if (!is_null($replacement)) {
+            // ...and also for replacement character, but for target encoding
+            self::strip($replacement, $to);
+        }
+
+        // Determine replacement character in target encoding (mostly a question mark)
+        $mark = mb_convert_encoding(mb_chr(0xFFFD), $to, $from);
+
+        // Split whole string into characters
+        $buf = mb_str_split($in, 1);
+        $out = '';
+
+        foreach ($buf as $old) {
+            $cp = mb_ord($old);
+
+            // Pass-through lowest 7 bits
+            if ($cp < 0x80) {
+                $out .= $old;
+                continue;
+            }
+
+            if ($cp < 0x100) {
+                // characters with 1 byte length can be encoded directly
+                $new = mb_convert_encoding($old, $to, $from);
+            } else {
+                // all other multi-byte characters are safely encoded by iconv
+                // (with translitertion)
+                $new = iconv($from, "$to//TRANSLIT", $old);
+            }
+
+            // Compare with replacement character
+            if (!is_null($replacement) and $new === $mark) {
+                $out .= $replacement;
+            } else {
+                $out .= $new;
+            }
+        }
+        return $out;
+    }
 }

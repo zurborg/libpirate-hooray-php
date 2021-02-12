@@ -249,4 +249,52 @@ class PirateHoorayStrTest extends PHPUnit_Framework_TestCase
         $i = 0x100;
         $this->assertFalse(Str::convertable(mb_chr($i), $to, 'utf8'), sprintf('Convert codepoint %d to %s', $i, $to));
     }
+
+    public function testStrip()
+    {
+        for ($i = 0; $i < 0x1000; $i++) {
+            $c = mb_chr($i);
+            Str::strip($c);
+            $this->assertNotSame("X", "X$c", "Str::strip($i)");
+            $this->assertSame(mb_ord($c), $i, "Str::strip($i)");
+        }
+        for ($i = 0x80; $i < 0x100; $i++) {
+            $c = pack('C', $i);
+            Str::strip($c);
+            $this->assertSame("X", "X$c", "Str::strip($i)");
+        }
+    }
+
+    public function testTranslit()
+    {
+        $a = "æåëýþÿüïöœäðèéùúĳøàáçìíñµ";
+        $b = Str::translit($a, 'ISO-8859-1');
+        $b = mb_convert_encoding($b, 'utf8', 'ISO-8859-1');
+        $this->assertSame('æåëýþÿüïöoeäðèéùúijøàáçìíñµ', $b);
+
+        $a = "ÆÅËÝÞŸÜÏÖŒÄ§ÐÈÉÙÚĲØÀÁÇÌÍÑ";
+        $b = Str::translit($a, 'ISO-8859-1');
+        $b = mb_convert_encoding($b, 'utf8', 'ISO-8859-1');
+        $this->assertSame('ÆÅËÝÞ?ÜÏÖOEÄ§ÐÈÉÙÚIJØÀÁÇÌÍÑ', $b);
+
+        $a = "ÆÅËÝÞŸÜÏÖŒÄ§ÐÈÉÙÚĲØÀÁÇÌÍÑ";
+        $b = Str::translit($a, 'ISO-8859-1', '');
+        $b = mb_convert_encoding($b, 'utf8', 'ISO-8859-1');
+        $this->assertSame('ÆÅËÝÞÜÏÖOEÄ§ÐÈÉÙÚIJØÀÁÇÌÍÑ', $b);
+
+        $a = "æåëýþÿüïöœäðèéùúĳøàáçìíñµ";
+        $b = Str::translit($a, 'ascii');
+        $b = mb_convert_encoding($b, 'utf8', 'ascii');
+        $this->assertSame('?????????oe??????ij????????', $b);
+
+        $a = "æåëýþÿüïöœäðèéùúĳøàáçìíñµ";
+        $b = Str::translit($a, 'ascii', '');
+        $b = mb_convert_encoding($b, 'utf8', 'ascii');
+        $this->assertSame('oeij', $b);
+
+        $a = "æåëýþÿüïöœäðèéùúĳøàáçìíñµ";
+        $b = Str::translit($a, 'ascii', 'X');
+        $b = mb_convert_encoding($b, 'utf8', 'ascii');
+        $this->assertSame('XXXXXXXXXoeXXXXXXijXXXXXXXX', $b);
+    }
 }
