@@ -421,13 +421,17 @@ class Str
      * ```
      *
      * @param int $rounds
+     * @param bool $use_strong
      * @return string
      */
-    public static function salt2y(int $rounds = 4)
+    public static function salt2y(int $rounds = 4, bool $use_strong = false)
     {
         $bytes = 18;
-        $false = false;
-        $rand = base64_encode(openssl_random_pseudo_bytes($bytes, $false));
+        $was_strong = false;
+        $rand = base64_encode(openssl_random_pseudo_bytes($bytes, $was_strong));
+        if ($use_strong && !$was_strong) {
+            throw new \RuntimeException("Insufficient cryptographically strong random data");
+        }
         $rand = str_replace('+', '.', substr($rand, 2, 22));
         return sprintf('$2y$%02d$%22s', $rounds, $rand);
     }
@@ -566,8 +570,7 @@ class Str
     public static function uuidV4(bool $binary = false)
     {
         $len = 16;
-        $sec = false;
-        $bin = openssl_random_pseudo_bytes($len, $sec);
+        $bin = openssl_random_pseudo_bytes($len);
         $bin &= hex2bin('ffffffff' . 'ffff' . '0fff' . 'bfff' . 'ffffffffffff');
         $bin |= hex2bin('00000000' . '0000' . '4000' . '8000' . '000000000000');
         if ($binary) {
