@@ -11,55 +11,55 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
 {
     public function testOk()
     {
-        $this->assertSame(Arr::ok(null), false);
-        $this->assertSame(Arr::ok(''), false);
-        $this->assertSame(Arr::ok('foo'), false);
-        $this->assertSame(Arr::ok(new \Exception('foo')), false);
-        $this->assertSame(Arr::ok([]), 0);
-        $this->assertSame(Arr::ok([1]), 1);
-        $this->assertSame(Arr::ok([1, 2]), 2);
-        $this->assertSame(Arr::ok([1, 2, 3]), 3);
-        $this->assertSame(Arr::ok(['foo' => 'bar']), 1);
-        $this->assertSame(Arr::ok(['foo' => 'bar', 'bar' => 'foo']), 2);
-        $this->assertSame(Arr::ok([null]), 1);
-        $this->assertSame(Arr::ok([null, null]), 2);
+        $this->assertFalse(Arr::ok(null));
+        $this->assertFalse(Arr::ok(''));
+        $this->assertFalse(Arr::ok('foo'));
+        $this->assertFalse(Arr::ok(new Exception('foo')));
+        $this->assertSame(0, Arr::ok([]));
+        $this->assertSame(1, Arr::ok([1]));
+        $this->assertSame(2, Arr::ok([1, 2]));
+        $this->assertSame(3, Arr::ok([1, 2, 3]));
+        $this->assertSame(1, Arr::ok(['foo' => 'bar']));
+        $this->assertSame(2, Arr::ok(['foo' => 'bar', 'bar' => 'foo']));
+        $this->assertSame(1, Arr::ok([null]));
+        $this->assertSame(2, Arr::ok([null, null]));
     }
 
     public function testIndex()
     {
-        $this->assertSame(Arr::index([], 0), null);
+        $this->assertNull(Arr::index([], 0));
 
-        $this->assertSame(Arr::index([1], -2), 0);
-        $this->assertSame(Arr::index([1], -1), 0);
-        $this->assertSame(Arr::index([1], 0), 0);
-        $this->assertSame(Arr::index([1], +1), 0);
-        $this->assertSame(Arr::index([1], +2), 0);
+        $this->assertSame(0, Arr::index([1], -2));
+        $this->assertSame(0, Arr::index([1], -1));
+        $this->assertSame(0, Arr::index([1], 0));
+        $this->assertSame(0, Arr::index([1], +1));
+        $this->assertSame(0, Arr::index([1], +2));
 
-        $this->assertSame(Arr::index([1, 2], -2), 0);
-        $this->assertSame(Arr::index([1, 2], -1), 1);
-        $this->assertSame(Arr::index([1, 2], 0), 0);
-        $this->assertSame(Arr::index([1, 2], +1), 1);
-        $this->assertSame(Arr::index([1, 2], +2), 0);
+        $this->assertSame(0, Arr::index([1, 2], -2));
+        $this->assertSame(1, Arr::index([1, 2], -1));
+        $this->assertSame(0, Arr::index([1, 2], 0));
+        $this->assertSame(1, Arr::index([1, 2], +1));
+        $this->assertSame(0, Arr::index([1, 2], +2));
 
-        $this->assertSame(Arr::index([1, 2, 3], -9), 0);
-        $this->assertSame(Arr::index([1, 2, 3], -8), 1);
-        $this->assertSame(Arr::index([1, 2, 3], -7), 2);
-        $this->assertSame(Arr::index([1, 2, 3], -6), 0);
-        $this->assertSame(Arr::index([1, 2, 3], -5), 1);
-        $this->assertSame(Arr::index([1, 2, 3], -4), 2);
-        $this->assertSame(Arr::index([1, 2, 3], -3), 0);
-        $this->assertSame(Arr::index([1, 2, 3], -2), 1);
-        $this->assertSame(Arr::index([1, 2, 3], -1), 2);
-        $this->assertSame(Arr::index([1, 2, 3], 0), 0);
-        $this->assertSame(Arr::index([1, 2, 3], +1), 1);
-        $this->assertSame(Arr::index([1, 2, 3], +2), 2);
-        $this->assertSame(Arr::index([1, 2, 3], +3), 0);
-        $this->assertSame(Arr::index([1, 2, 3], +4), 1);
-        $this->assertSame(Arr::index([1, 2, 3], +5), 2);
-        $this->assertSame(Arr::index([1, 2, 3], +6), 0);
-        $this->assertSame(Arr::index([1, 2, 3], +7), 1);
-        $this->assertSame(Arr::index([1, 2, 3], +8), 2);
-        $this->assertSame(Arr::index([1, 2, 3], +9), 0);
+        $this->assertSame(0, Arr::index([1, 2, 3], -9));
+        $this->assertSame(1, Arr::index([1, 2, 3], -8));
+        $this->assertSame(2, Arr::index([1, 2, 3], -7));
+        $this->assertSame(0, Arr::index([1, 2, 3], -6));
+        $this->assertSame(1, Arr::index([1, 2, 3], -5));
+        $this->assertSame(2, Arr::index([1, 2, 3], -4));
+        $this->assertSame(0, Arr::index([1, 2, 3], -3));
+        $this->assertSame(1, Arr::index([1, 2, 3], -2));
+        $this->assertSame(2, Arr::index([1, 2, 3], -1));
+        $this->assertSame(0, Arr::index([1, 2, 3], 0));
+        $this->assertSame(1, Arr::index([1, 2, 3], +1));
+        $this->assertSame(2, Arr::index([1, 2, 3], +2));
+        $this->assertSame(0, Arr::index([1, 2, 3], +3));
+        $this->assertSame(1, Arr::index([1, 2, 3], +4));
+        $this->assertSame(2, Arr::index([1, 2, 3], +5));
+        $this->assertSame(0, Arr::index([1, 2, 3], +6));
+        $this->assertSame(1, Arr::index([1, 2, 3], +7));
+        $this->assertSame(2, Arr::index([1, 2, 3], +8));
+        $this->assertSame(0, Arr::index([1, 2, 3], +9));
     }
 
     public function testGet()
@@ -68,9 +68,9 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
             'foo' => 123,
             'bar' => 456,
         ];
-        $this->assertSame(Arr::get($A, 'foo'), 123);
-        $this->assertSame(Arr::get($A, 'bla'), null);
-        $this->assertSame(Arr::get($A, 'bla', 'blubb'), 'blubb');
+        $this->assertSame(123, Arr::get($A, 'foo'));
+        $this->assertNull(Arr::get($A, 'bla'));
+        $this->assertSame('blubb', Arr::get($A, 'bla', 'blubb'));
     }
 
     public function testLoad1()
@@ -79,8 +79,8 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
             'foo' => 123,
             'bar' => 456,
         ];
-        $this->assertSame(Arr::load($A, 'foo', 'foo does not exists'), 123);
-        $this->assertSame(Arr::load($A, 'bar', 'bar does not exists'), 456);
+        $this->assertSame(123, Arr::load($A, 'foo', 'foo does not exists'));
+        $this->assertSame(456, Arr::load($A, 'bar', 'bar does not exists'));
     }
 
     /**
@@ -98,14 +98,14 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
         $A = [
             'foo' => 123,
         ];
-        $this->assertSame(true, Arr::has($A, 'foo'));
-        $this->assertSame(false, Arr::has($A, 'bla'));
+        $this->assertTrue(Arr::has($A, 'foo'));
+        $this->assertFalse(Arr::has($A, 'bla'));
     }
 
     public function testGetIndex()
     {
         $A = ['foo', 'bar'];
-        $this->assertSame(Arr::getIndex($A, -1), 'bar');
+        $this->assertSame('bar', Arr::getIndex($A, -1));
     }
 
     public function testInit()
@@ -113,9 +113,9 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
         $A = [
             'foo' => 123,
         ];
-        $this->assertSame(Arr::init($A, 'foo', 234), 123);
-        $this->assertSame(Arr::init($A, 'bar', 456), 456);
-        $this->assertSame($A, ['foo' => 123, 'bar' => 456]);
+        $this->assertSame(123, Arr::init($A, 'foo', 234));
+        $this->assertSame(456, Arr::init($A, 'bar', 456));
+        $this->assertSame(['foo' => 123, 'bar' => 456], $A);
     }
 
     public function testConsume()
@@ -123,10 +123,10 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
         $A = [
             'foo' => 123,
         ];
-        $this->assertSame(Arr::consume($A, 'foo'), 123);
-        $this->assertSame($A, []);
-        $this->assertSame(Arr::consume($A, 'bar', 456), 456);
-        $this->assertSame($A, []);
+        $this->assertSame(123, Arr::consume($A, 'foo'));
+        $this->assertSame([], $A);
+        $this->assertSame(456, Arr::consume($A, 'bar', 456));
+        $this->assertSame([], $A);
     }
 
     public function testAssert1()
@@ -168,24 +168,24 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
             'foo' => 123,
         ];
         $this->assertSame(
+            '-bar-',
             Arr::assert(
                 $A,
                 'bar',
                 function ($key) {
                     return "-$key-";
                 }
-            ),
-            '-bar-'
+            )
         );
     }
 
     public function testIn()
     {
         $A = ['123', 456];
-        $this->assertSame(Arr::in($A, 123), false);
-        $this->assertSame(Arr::in($A, '123'), true);
-        $this->assertSame(Arr::in($A, 456), true);
-        $this->assertSame(Arr::in($A, '456'), false);
+        $this->assertFalse(Arr::in($A, 123));
+        $this->assertTrue(Arr::in($A, '123'));
+        $this->assertTrue(Arr::in($A, 456));
+        $this->assertFalse(Arr::in($A, '456'));
     }
 
     public function testIs()
@@ -194,44 +194,41 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
             'foo' => 123,
             'bar' => '456',
         ];
-        $this->assertSame(Arr::is($A, 'foo', 123), true);
-        $this->assertSame(Arr::is($A, 'bar', 456), false);
-        $this->assertSame(Arr::is($A, 'xxx', 'yyy'), false);
-        $this->assertSame(Arr::is($A, 'yyy', null), true);
+        $this->assertTrue(Arr::is($A, 'foo', 123));
+        $this->assertFalse(Arr::is($A, 'bar', 456));
+        $this->assertFalse(Arr::is($A, 'xxx', 'yyy'));
+        $this->assertTrue(Arr::is($A, 'yyy', null));
     }
 
     public function testAny()
     {
         $A = ['aaa', 'bbb'];
-        $this->assertSame(Arr::any($A, ['aaa', 'ccc']), true);
-        $this->assertSame(Arr::any($A, ['ccc', 'ddd']), false);
-        $this->assertSame(Arr::any($A, []), null);
+        $this->assertTrue(Arr::any($A, ['aaa', 'ccc']));
+        $this->assertFalse(Arr::any($A, ['ccc', 'ddd']));
+        $this->assertFalse(Arr::any($A, []));
     }
 
     public function testAll()
     {
         $A = ['aaa', 'bbb', 'ccc'];
-        $this->assertSame(Arr::all($A, ['aaa', 'ccc']), true);
-        $this->assertSame(Arr::all($A, ['ccc', 'ddd']), false);
-        $this->assertSame(Arr::all($A, []), null);
+        $this->assertTrue(Arr::all($A, ['aaa', 'ccc']));
+        $this->assertFalse(Arr::all($A, ['ccc', 'ddd']));
+        $this->assertFalse(Arr::all($A, []));
     }
 
     public function testAssoc()
     {
         $A = [4, 9, 1];
         $B = ['foo' => 'bar'];
-        $this->assertSame(Arr::assoc($A), false);
-        $this->assertSame(Arr::assoc($B), true);
-        $this->assertSame(Arr::assoc([]), null);
+        $this->assertFalse(Arr::assoc($A));
+        $this->assertTrue(Arr::assoc($B));
+        $this->assertFalse(Arr::assoc([]));
     }
 
     public function testFlist()
     {
-        $this->assertSame(Arr::flist('foo'), ['foo']);
-        $this->assertSame(Arr::flist(['foo', 'bar']), ['foo', 'bar']);
-        $this->assertSame(Arr::flist(['foo' => 'bar']), [['foo' => 'bar']]);
-        $this->assertSame(Arr::flist(null), []);
-        $this->assertSame(Arr::flist(null, false), false);
+        $this->assertSame(['foo', 'bar'], Arr::flist(['foo', 'bar']));
+        $this->assertSame([['foo' => 'bar']], Arr::flist(['foo' => 'bar']));
     }
 
     public function testGetDeep()
@@ -241,8 +238,8 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
                 'bar' => 123,
             ],
         ];
-        $this->assertSame(Arr::getDeep($A, ['foo', 'bar']), 123);
-        $this->assertSame(Arr::getDeep($A, ['bar', 'foo'], 456), 456);
+        $this->assertSame(123, Arr::getDeep($A, ['foo', 'bar']));
+        $this->assertSame(456, Arr::getDeep($A, ['bar', 'foo'], 456));
     }
 
     public function testIsDeep()
@@ -252,8 +249,8 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
                 'bar' => 123,
             ],
         ];
-        $this->assertSame(Arr::isDeep($A, ['foo', 'bar'], 123), true);
-        $this->assertSame(Arr::isDeep($A, ['bar', 'foo'], 456), false);
+        $this->assertTrue(Arr::isDeep($A, ['foo', 'bar'], 123));
+        $this->assertFalse(Arr::isDeep($A, ['bar', 'foo'], 456));
     }
 
     public function testSetDeep()
@@ -292,8 +289,8 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
                 'bar' => 123,
             ],
         ];
-        $this->assertSame(Arr::getPath($A, '/foo/bar'), 123);
-        $this->assertSame(Arr::getPath($A, '/bar/foo', 456), 456);
+        $this->assertSame(123, Arr::getPath($A, '/foo/bar'));
+        $this->assertSame(456, Arr::getPath($A, '/bar/foo', 456));
     }
 
     public function testIsPath()
@@ -303,8 +300,8 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
                 'bar' => 123,
             ],
         ];
-        $this->assertSame(Arr::isPath($A, '/foo/bar', 123), true);
-        $this->assertSame(Arr::isPath($A, '/foo/bar', 456), false);
+        $this->assertTrue(Arr::isPath($A, '/foo/bar', 123));
+        $this->assertFalse(Arr::isPath($A, '/foo/bar', 456));
         $this->assertSame(Arr::isPath($A, '/bar/foo', 789), false);
     }
 
