@@ -652,6 +652,23 @@ class Str
     }
 
     /**
+     * Tests if a string is convertable without loss between to encodings
+     *
+     * Returns true if there-and-back-again convertion results to the original string
+     *
+     * @param string $subject
+     * @param string $to target encoding
+     * @param string $from original encoding, defaults to UTF-8
+     * @return bool
+     */
+    public static function convertable(string $subject, string $to, string $from = 'utf8'): bool
+    {
+        $a = mb_convert_encoding($subject, $to, $from);
+        $b = mb_convert_encoding($a, $from, $to);
+        return $subject === $b;
+    }
+
+    /**
      * Reverse-apply of formatted string
      *
      * ```php
