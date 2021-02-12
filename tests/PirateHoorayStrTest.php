@@ -225,4 +225,11 @@ class PirateHoorayStrTest extends PHPUnit_Framework_TestCase
         $this->assertSame('c', Str::ftime(new DateTimeImmutable(), '\c', 'BAD'));
         $this->assertSame('2020-03-02T00:00:00+00:00', Str::ftime(new DateTimeImmutable('2020-02-30T24:00:00Z'), 'c', 'BAD'));
     }
+
+    public function testFcEq()
+    {
+        $this->assertTrue(Str::fceq('A', 'a'));
+        $this->assertFalse(Str::fceq('a', 'B'));
+        $this->assertTrue(Str::fceq('ç', 'Ç'));
+    }
 }

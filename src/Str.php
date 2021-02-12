@@ -646,9 +646,13 @@ class Str
      */
     public static function fceq(string $a, string $b)
     {
-        $lower = mb_convert_case($a, MB_CASE_LOWER) === mb_convert_case($b, MB_CASE_LOWER);
-        $upper = mb_convert_case($a, MB_CASE_UPPER) === mb_convert_case($b, MB_CASE_UPPER);
-        return $lower or $upper;
+        if (PHP_VERSION_ID >= 70300) {
+            return mb_convert_case($a, MB_CASE_FOLD) === mb_convert_case($b, MB_CASE_FOLD);
+        } else {
+            $lower = mb_convert_case($a, MB_CASE_LOWER) === mb_convert_case($b, MB_CASE_LOWER);
+            $upper = mb_convert_case($a, MB_CASE_UPPER) === mb_convert_case($b, MB_CASE_UPPER);
+            return $lower or $upper;
+        }
     }
 
     /**
