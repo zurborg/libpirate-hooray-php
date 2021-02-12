@@ -30,13 +30,12 @@ class Arr
      * ```
      *
      * @param mixed $array
-     * @param mixed $nvl
      * @return int|false
      * @see is_array()
      */
-    public static function ok($array, $nvl = false)
+    public static function ok($array)
     {
-        return is_array($array) ? count($array) : $nvl;
+        return is_array($array) ? count($array) : false;
     }
 
     /**
@@ -49,6 +48,7 @@ class Arr
      * Arr::index([1,2,3], -1);  // returns 2
      * Arr::index([1,2,3], -11); // returns 1
      * Arr::index([1,2,3], 9);   // returns 0
+     * Arr::index([], $any);     // returns null
      * ```
      *
      * @param array $array
@@ -382,16 +382,12 @@ class Arr
      * Arr::flist(null, false); // returns false
      * ```
      *
-     * @param mixed $array
-     * @param mixed $nvl
+     * @param array $array
      * @return array
      */
-    public static function flist($array, $nvl = [])
+    public static function flist(array $array): array
     {
-        if (is_null($array)) {
-            return $nvl;
-        }
-        return is_array($array) && !self::assoc($array) ? $array : [$array];
+        return !self::assoc($array) ? $array : [$array];
     }
 
     /**
