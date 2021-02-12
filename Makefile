@@ -20,6 +20,7 @@ clean:
 
 vendor: composer.json
 	$(composer) --prefer-dist install
+	rm composer.lock
 
 composer.json: composer.yaml
 	$(yaml2json) < $? > $@

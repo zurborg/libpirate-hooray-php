@@ -5,9 +5,10 @@ namespace Pirate\Hooray;
 use Exception;
 use InvalidArgumentException;
 use OutOfBoundsException;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
+use Throwable;
 
-class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
+class PirateHoorayArrTest extends TestCase
 {
     public function testOk()
     {
@@ -83,12 +84,10 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
         $this->assertSame(456, Arr::load($A, 'bar', 'bar does not exists'));
     }
 
-    /**
-     * @expectedException OutOfBoundsException
-     * @expectedExceptionMessage foo does not exists
-     */
     public function testLoad2()
     {
+        $this->expectExceptionMessage("foo does not exists");
+        $this->expectException(OutOfBoundsException::class);
         $A = [];
         Arr::load($A, 'foo', 'foo does not exists');
     }
@@ -129,8 +128,12 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
         $this->assertSame([], $A);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function testAssert1()
     {
+        $this->expectNotToPerformAssertions();
         $A = [
             'foo' => 123,
         ];
@@ -138,11 +141,12 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        OutOfBoundsException
-     * @expectedExceptionMessage this does not exists
+     * @throws Throwable
      */
     public function testAssert2()
     {
+        $this->expectExceptionMessage("this does not exists");
+        $this->expectException(OutOfBoundsException::class);
         $A = [
             'foo' => 123,
         ];
@@ -150,11 +154,12 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        InvalidArgumentException
-     * @expectedExceptionMessage that does not exists
+     * @throws Throwable
      */
     public function testAssert3()
     {
+        $this->expectExceptionMessage("that does not exists");
+        $this->expectException(InvalidArgumentException::class);
         $A = [
             'foo' => 123,
         ];
@@ -162,6 +167,9 @@ class PirateHoorayArrTest extends PHPUnit_Framework_TestCase
         Arr::assert($A, 'bar', $e);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function testAssert4()
     {
         $A = [

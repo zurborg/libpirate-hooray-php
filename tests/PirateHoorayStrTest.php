@@ -3,9 +3,10 @@
 namespace Pirate\Hooray;
 
 use DateTimeImmutable;
-use PHPUnit_Framework_TestCase;
+use Exception;
+use PHPUnit\Framework\TestCase;
 
-class PirateHoorayStrTest extends PHPUnit_Framework_TestCase
+class PirateHoorayStrTest extends TestCase
 {
     public function testOk()
     {
@@ -13,7 +14,7 @@ class PirateHoorayStrTest extends PHPUnit_Framework_TestCase
         $this->assertSame(Str::ok(false), false);
         $this->assertSame(Str::ok(true), false);
         $this->assertSame(Str::ok([]), false);
-        $this->assertSame(Str::ok(new \Exception('foo')), false);
+        $this->assertSame(Str::ok(new Exception('foo')), false);
         $this->assertSame(Str::ok(''), 0);
         $this->assertSame(Str::ok('foo'), 3);
         $this->assertSame(Str::ok("123"), 3);
@@ -108,8 +109,8 @@ class PirateHoorayStrTest extends PHPUnit_Framework_TestCase
         $uuids = [];
         for ($i = 0; $i < 10; $i++) {
             $uuid = Str::uuidV4();
-            $this->assertFalse(array_key_exists($uuid, $uuids), "UUID was generated before");
-            $this->assertRegExp('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $uuid, "uuid v4 round $i");
+            $this->assertArrayNotHasKey($uuid, $uuids, "UUID was generated before");
+            $this->assertMatchesRegularExpression('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $uuid, "uuid v4 round $i");
             $uuids[$uuid] = $i;
         }
     }
