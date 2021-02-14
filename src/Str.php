@@ -807,4 +807,40 @@ class Str
         }
         return $out;
     }
+
+    /**
+     * Remove all non-printable unicode characters, in-place
+     *
+     * @param string &$subject
+     * @param int $limit
+     */
+    public static function vacuum(string &$subject, int $limit = -1): void
+    {
+        if (mb_strlen($subject) === 0) {
+            return;
+        }
+        self::remove($subject, '/[[:^print:]]+/u', $limit);
+    }
+
+    /**
+     * Test if a string contains only printable unicode characters
+     *
+     * @param string $subject
+     * @return bool
+     */
+    public static function printable(string $subject): bool
+    {
+        $origlen = mb_strlen($subject);
+        if ($origlen === 0) {
+            return true;
+        }
+        /*
+         * its not possible to match non-printable unicode character
+        if (!is_null(self::match($subject, '/[[^:print:]]/u'))) {
+            return false;
+        }
+         */
+        Str::vacuum($subject, 1);
+        return mb_strlen($subject) === $origlen;
+    }
 }

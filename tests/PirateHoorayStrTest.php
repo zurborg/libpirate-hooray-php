@@ -300,4 +300,49 @@ class PirateHoorayStrTest extends TestCase
         $b = mb_convert_encoding($b, 'utf8', 'ascii');
         $this->assertSame('XXXXXXXXXoeXXXXXXijXXXXXXXX', $b);
     }
+
+    private function testPrintable(int $start, int $until, bool $printable)
+    {
+        for ($cp = $start; $cp < $until; $cp++) {
+            $str = mb_chr($cp);
+            $this->assertSame(1, mb_strlen($str), sprintf("mb_strlen(U+%04X)", $cp));
+            $this->assertSame($printable, Str::printable($str), sprintf("Str::printable(U+%04X)", $cp));
+            Str::vacuum($str);
+            $this->assertSame($printable ? 1 : 0, mb_strlen($str), sprintf("Str::vacuum(U+%04X)", $cp));
+        }
+    }
+
+    public function testVacuumAndPrintable()
+    {
+        $lower = 0x00;
+        $printable = false;
+        foreach ([0x20, 0x7f, 0xA0, 0x378, 0x37A, 0x380, 0x384, 0x38B, 0x38C, 0x38D, 0x38E, 0x3A2, 0x3A3, 0x530] as $upper) {
+            $this->testPrintable($lower, $upper, $printable);
+            $printable = !$printable;
+            $lower = $upper;
+        }
+
+        foreach ([0xFFF0, 0xFFF1, 0xFFF2, 0xFFF3, 0xFFF4, 0xFFF5, 0xFFF6, 0xFFF7, 0xFFF8, 0xFFFE, 0xFFFF] as $cp) {
+            $str = mb_chr($cp);
+            $this->assertSame(1, mb_strlen($str), sprintf("mb_strlen(U+%04X)", $cp));
+            $this->assertFalse(Str::printable($str), sprintf("Str::printable(U+%04X)", $cp));
+            Str::vacuum($str);
+            $this->assertSame(0, mb_strlen($str), sprintf("Str::vacuum(U+%04X)", $cp));
+        }
+
+        foreach ([0xFFF9, 0xFFFA, 0xFFFB, 0xFFFC, 0xFFFD] as $cp) {
+            $str = mb_chr($cp);
+            $this->assertSame(1, mb_strlen($str), sprintf("mb_strlen(U+%04X)", $cp));
+            $this->assertTrue(Str::printable($str), sprintf("Str::printable(U+%04X)", $cp));
+            Str::vacuum($str);
+            $this->assertSame(1, mb_strlen($str), sprintf("Str::vacuum(U+%04X)", $cp));
+        }
+
+        $str = "A\x00\x01\x02\x03B\x04\x0B\x06\x07C\x08\x09\x0a\x0bD\x0c\x0d\x0e\x0fE";
+        $this->assertNotSame('ABCDE', $str);
+        $this->assertFalse(Str::printable($str));
+        Str::vacuum($str);
+        $this->assertTrue(Str::printable($str));
+        $this->assertSame('ABCDE', $str);
+    }
 }
