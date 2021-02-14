@@ -426,13 +426,13 @@ class Str
      */
     public static function salt2y(int $rounds = 4, bool $use_strong = false): string
     {
-        $bytes = 18;
+        $bytes = 16;
         $was_strong = false;
         $rand = base64_encode(openssl_random_pseudo_bytes($bytes, $was_strong));
         if ($use_strong && !$was_strong) {
             throw new RuntimeException("Insufficient cryptographically strong random data");
         }
-        $rand = str_replace('+', '.', substr($rand, 2, 22));
+        $rand = str_replace('+', '.', substr($rand, 0, 22));
         return sprintf('$2y$%02d$%22s', $rounds, $rand);
     }
 
