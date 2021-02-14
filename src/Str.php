@@ -775,6 +775,8 @@ class Str
         $buf = mb_str_split($in, 1);
         $out = '';
 
+        $iconv = extension_loaded('iconv');
+
         foreach ($buf as $old) {
             $cp = mb_ord($old);
 
@@ -784,13 +786,16 @@ class Str
                 continue;
             }
 
-            if ($cp < 0x100) {
+            if ($cp < 0x100 or !$iconv) {
                 // characters with 1 byte length can be encoded directly
                 $new = mb_convert_encoding($old, $to, $from);
             } else {
                 // all other multi-byte characters are safely encoded by iconv
                 // (with translitertion)
-                $new = iconv($from, "$to//TRANSLIT", $old);
+                $new = @iconv($from, "$to//TRANSLIT", $old);
+                if ($new === false) {
+                    $new = $mark;
+                }
             }
 
             // Compare with replacement character
