@@ -729,13 +729,17 @@ class Str
      *
      * @param string $subject
      * @param string $encoding defaults to UTF-8
+     * @return bool true if $subject is changed
      */
-    public static function strip(string &$subject, string $encoding = 'utf8'): void
+    public static function strip(string &$subject, string $encoding = 'utf8'): bool
     {
         $orig = mb_substitute_character();
         try {
             mb_substitute_character('none');
-            $subject = mb_convert_encoding($subject, $encoding, $encoding);
+            $converted = mb_convert_encoding($subject, $encoding, $encoding);
+            $changed = strlen($subject) !== strlen($converted);
+            $subject = $converted;
+            return $changed;
         } finally {
             mb_substitute_character($orig);
         }

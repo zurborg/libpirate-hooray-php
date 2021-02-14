@@ -255,13 +255,15 @@ class PirateHoorayStrTest extends TestCase
     {
         for ($i = 0; $i < 0x1000; $i++) {
             $c = mb_chr($i);
-            Str::strip($c);
+            $changed = Str::strip($c);
+            $this->assertFalse($changed, sprintf("Str::strip(U+%04X)", $i));
             $this->assertNotSame("X", "X$c", sprintf("Str::strip(U+%04X)", $i));
             $this->assertSame(mb_ord($c), $i, sprintf("Str::strip(U+%04X)", $i));
         }
         for ($i = 0x80; $i < 0x100; $i++) {
             $c = pack('C', $i);
-            Str::strip($c);
+            $changed = Str::strip($c);
+            $this->assertTrue($changed, sprintf("Str::strip(U+%04X)", $i));
             $this->assertSame("X", "X$c", sprintf("Str::strip(U+%04X)", $i));
         }
     }
