@@ -238,17 +238,17 @@ class PirateHoorayStrTest extends TestCase
     {
         $to = 'ascii';
         for ($i = 0; $i < 0x80; $i++) {
-            $this->assertTrue(Str::convertable(mb_chr($i), $to, 'utf8'), sprintf('Convert codepoint %d to %s', $i, $to));
+            $this->assertTrue(Str::convertable(mb_chr($i), $to, 'utf8'), sprintf('Convert codepoint U+%04X to %s', $i, $to));
         }
         $i = 0x80;
-        $this->assertFalse(Str::convertable(mb_chr($i), $to, 'utf8'), sprintf('Convert codepoint %d to %s', $i, $to));
+        $this->assertFalse(Str::convertable(mb_chr($i), $to, 'utf8'), sprintf('Convert codepoint U+%04X to %s', $i, $to));
 
         $to = 'ISO-8859-1';
         for ($i = 0; $i < 0x100; $i++) {
-            $this->assertTrue(Str::convertable(mb_chr($i), $to, 'utf8'), sprintf('Convert codepoint %d to %s', $i, $to));
+            $this->assertTrue(Str::convertable(mb_chr($i), $to, 'utf8'), sprintf('Convert codepoint U+%04X to %s', $i, $to));
         }
         $i = 0x100;
-        $this->assertFalse(Str::convertable(mb_chr($i), $to, 'utf8'), sprintf('Convert codepoint %d to %s', $i, $to));
+        $this->assertFalse(Str::convertable(mb_chr($i), $to, 'utf8'), sprintf('Convert codepoint U+%04X to %s', $i, $to));
     }
 
     public function testStrip()
@@ -256,13 +256,13 @@ class PirateHoorayStrTest extends TestCase
         for ($i = 0; $i < 0x1000; $i++) {
             $c = mb_chr($i);
             Str::strip($c);
-            $this->assertNotSame("X", "X$c", "Str::strip($i)");
-            $this->assertSame(mb_ord($c), $i, "Str::strip($i)");
+            $this->assertNotSame("X", "X$c", sprintf("Str::strip(U+%04X)", $i));
+            $this->assertSame(mb_ord($c), $i, sprintf("Str::strip(U+%04X)", $i));
         }
         for ($i = 0x80; $i < 0x100; $i++) {
             $c = pack('C', $i);
             Str::strip($c);
-            $this->assertSame("X", "X$c", "Str::strip($i)");
+            $this->assertSame("X", "X$c", sprintf("Str::strip(U+%04X)", $i));
         }
     }
 
