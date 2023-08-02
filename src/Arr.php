@@ -55,7 +55,7 @@ class Arr
      * @param int $index
      * @return int|null
      */
-    public static function index(array $array, int $index)
+    public static function index(array $array, int $index): ?int
     {
         $n = count($array);
         if (!$n) {
@@ -105,7 +105,7 @@ class Arr
      */
     public static function has(array $array, string $key): bool
     {
-        return array_key_exists($key, $array) ? true : false;
+        return array_key_exists($key, $array);
     }
 
     /**
@@ -393,7 +393,7 @@ class Arr
     /**
      * Set a new value in an array and return old value
      *
-     * @param $array
+     * @param array $array
      * @param $key
      * @param $new_value
      * @return mixed

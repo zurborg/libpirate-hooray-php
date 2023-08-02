@@ -61,7 +61,7 @@ class Str
      * @param int $limit
      * @return string[]|null
      */
-    public static function split(string $path, int $limit = PHP_INT_MAX)
+    public static function split(string $path, int $limit = PHP_INT_MAX): ?array
     {
         if (!self::ok($path)) {
             return null;
@@ -102,7 +102,7 @@ class Str
      * @param int $offset string offset
      * @return string[]|null
      */
-    public static function match(string $subject, string $regexp, int $offset = 0)
+    public static function match(string $subject, string $regexp, int $offset = 0): ?array
     {
         return preg_match($regexp, $subject, $match, 0, $offset) ? $match : null;
     }
@@ -119,9 +119,9 @@ class Str
      * @param string $subject
      * @param string $regexp regular expression
      * @param int $offset string offset
-     * @return string[]|null
+     * @return string[][]|null
      */
-    public static function matchall(string $subject, string $regexp, int $offset = 0)
+    public static function matchall(string $subject, string $regexp, int $offset = 0): ?array
     {
         return preg_match_all($regexp, $subject, $match, 0, $offset) ? $match : null;
     }
@@ -141,7 +141,7 @@ class Str
      * @param string $modifiers optional modifiers
      * @return string[]|null
      */
-    public static function fullmatch(string $subject, string $regexp, string $modifiers = '')
+    public static function fullmatch(string $subject, string $regexp, string $modifiers = ''): ?array
     {
         $regexp = self::regexp($regexp, true, $modifiers);
         return preg_match($regexp, $subject, $match, 0, 0) ? $match : null;
@@ -253,8 +253,7 @@ class Str
                 return Arr::get($parts, $amount, $last);
             }
         );
-        $text = str_replace($search, $amount, $text);
-        return $text;
+        return str_replace($search, $amount, $text);
     }
 
     /**
@@ -716,10 +715,10 @@ class Str
      * @param DateTimeInterface|null $dt
      * @param string $format
      * @param string|null $default
-     * @return string|mixed
+     * @return string|null
      * @see date_format
      */
-    public static function ftime(?DateTimeInterface $dt, string $format, string $default = null)
+    public static function ftime(?DateTimeInterface $dt, string $format, ?string $default = null): ?string
     {
         return is_null($dt) ? $default : $dt->format($format);
     }
@@ -792,6 +791,7 @@ class Str
             } else {
                 // all other multi-byte characters are safely encoded by iconv
                 // (with translitertion)
+                assert(extension_loaded('iconv'));
                 $new = @iconv($from, "$to//TRANSLIT", $old);
                 if ($new === false) {
                     $new = $mark;

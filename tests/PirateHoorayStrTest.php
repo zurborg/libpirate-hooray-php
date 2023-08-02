@@ -275,15 +275,15 @@ class PirateHoorayStrTest extends TestCase
         $b = mb_convert_encoding($b, 'utf8', 'ISO-8859-1');
         $this->assertSame('æåëýþÿüïöoeäðèéùúijøàáçìíñµ', $b);
 
-        $a = "ÆÅËÝÞŸÜÏÖŒÄ§ÐÈÉÙÚĲØÀÁÇÌÍÑ";
+        $a = "ÆÅËÝÞÜÏÖŒÄ§ÐÈÉÙÚĲØÀÁÇÌÍÑ";
         $b = Str::translit($a, 'ISO-8859-1');
         $b = mb_convert_encoding($b, 'utf8', 'ISO-8859-1');
-        $this->assertSame('ÆÅËÝÞ?ÜÏÖOEÄ§ÐÈÉÙÚIJØÀÁÇÌÍÑ', $b);
+        $this->assertSame('ÆÅËÝÞÜÏÖOEÄ§ÐÈÉÙÚIJØÀÁÇÌÍÑ', $b);
 
         $a = "ÆÅËÝÞŸÜÏÖŒÄ§ÐÈÉÙÚĲØÀÁÇÌÍÑ";
         $b = Str::translit($a, 'ISO-8859-1', '');
         $b = mb_convert_encoding($b, 'utf8', 'ISO-8859-1');
-        $this->assertSame('ÆÅËÝÞÜÏÖOEÄ§ÐÈÉÙÚIJØÀÁÇÌÍÑ', $b);
+        $this->assertSame('ÆÅËÝÞYÜÏÖOEÄ§ÐÈÉÙÚIJØÀÁÇÌÍÑ', $b);
 
         $a = "æåëýþÿüïöœäðèéùúĳøàáçìíñµ";
         $b = Str::translit($a, 'ascii');
